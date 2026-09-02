@@ -202,14 +202,16 @@ export const Header: React.FC<HeaderProps> = ({
               id="btn-google-login-direct"
               onClick={onGoogleLogin}
               disabled={isDriveSyncing}
-              className="flex items-center gap-2.5 px-4 py-2 text-[13px] sm:text-[14px] font-extrabold rounded-xl bg-white hover:bg-gray-50 text-gray-800 shadow-md hover:shadow-lg transition-all cursor-pointer border border-gray-200 active:scale-98"
+              className="flex items-center gap-2.5 px-4 py-2 text-[13px] sm:text-[14px] font-extrabold rounded-xl bg-[#E10098] hover:bg-[#C90087] active:bg-[#B30076] text-white shadow-md hover:shadow-lg hover:shadow-pink-500/30 transition-all cursor-pointer border border-pink-400/50 active:scale-98 disabled:opacity-60"
               title="Haz clic para iniciar sesión con tu cuenta de Google y conectar la base de datos en vivo"
             >
-              <GoogleIcon className="w-4 h-4" />
-              <span className="text-[#8A185B] font-bold">
+              <div className="bg-white p-1 rounded-full flex items-center justify-center shadow-xs">
+                <GoogleIcon className="w-3.5 h-3.5" />
+              </div>
+              <span className="text-white font-bold tracking-wide">
                 {isDriveSyncing ? 'Conectando...' : 'Iniciar Sesión con Google'}
               </span>
-              <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" title="Pendiente de autenticación" />
+              <span className="w-2 h-2 rounded-full bg-white animate-pulse" title="Pendiente de autenticación" />
             </button>
           )}
 
