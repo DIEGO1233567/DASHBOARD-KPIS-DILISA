@@ -10,7 +10,7 @@ export const INITIAL_KPIS = [
   'Intercias',
   'Asociados',
   'Cuentas De Mayor',
-  'Conc. Ing. Contabilidad Electronica',
+  'LIGADO',
   'Conc. Ing. Mercaderias (Difer. Sis)',
 ];
 
@@ -76,7 +76,7 @@ const BASE_MATRIX_POINTS: Array<{ area: string; kpi: string; kpiFinal: number; w
   { area: 'Contraloría Boutiques', kpi: 'ISR', kpiFinal: 1.50, weight: 60 },
   { area: 'Contraloría Boutiques', kpi: 'Intercias', kpiFinal: 2.70, weight: 140 },
   { area: 'Contraloría Boutiques', kpi: 'Asociados', kpiFinal: 1.70, weight: 120 },
-  { area: 'Contraloría Boutiques', kpi: 'Conc. Ing. Contabilidad Electronica', kpiFinal: 1.30, weight: 80 },
+  { area: 'Contraloría Boutiques', kpi: 'LIGADO', kpiFinal: 1.30, weight: 80 },
 
   // Contraloría Corporativa
   { area: 'Contraloría Corporativa', kpi: 'Cartera de Credito', kpiFinal: 3.00, weight: 140 },
@@ -101,7 +101,7 @@ const BASE_MATRIX_POINTS: Array<{ area: string; kpi: string; kpiFinal: number; w
   { area: 'Contraloría Inmobiliaria', kpi: 'Intercias', kpiFinal: 3.50, weight: 220 },
   { area: 'Contraloría Inmobiliaria', kpi: 'Asociados', kpiFinal: 2.20, weight: 100 },
   { area: 'Contraloría Inmobiliaria', kpi: 'Cuentas De Mayor', kpiFinal: 2.10, weight: 140 },
-  { area: 'Contraloría Inmobiliaria', kpi: 'Conc. Ing. Contabilidad Electronica', kpiFinal: 3.00, weight: 120 },
+  { area: 'Contraloría Inmobiliaria', kpi: 'LIGADO', kpiFinal: 3.00, weight: 120 },
 
   // Contraloría Operativa
   { area: 'Contraloría Operativa', kpi: 'Inventario/Cto de vtas', kpiFinal: 3.10, weight: 140 },
@@ -110,7 +110,7 @@ const BASE_MATRIX_POINTS: Array<{ area: string; kpi: string; kpiFinal: number; w
   { area: 'Contraloría Operativa', kpi: 'ISR', kpiFinal: 2.10, weight: 90 },
   { area: 'Contraloría Operativa', kpi: 'Intercias', kpiFinal: 3.50, weight: 260 },
   { area: 'Contraloría Operativa', kpi: 'Asociados', kpiFinal: 1.90, weight: 110 },
-  { area: 'Contraloría Operativa', kpi: 'Conc. Ing. Contabilidad Electronica', kpiFinal: 3.00, weight: 130 },
+  { area: 'Contraloría Operativa', kpi: 'LIGADO', kpiFinal: 3.00, weight: 130 },
 
   // Contraloría Servicios
   { area: 'Contraloría Servicios', kpi: 'Pagos Anticipados', kpiFinal: 2.90, weight: 130 },
@@ -120,7 +120,7 @@ const BASE_MATRIX_POINTS: Array<{ area: string; kpi: string; kpiFinal: number; w
   { area: 'Contraloría Servicios', kpi: 'Intercias', kpiFinal: 3.30, weight: 210 },
   { area: 'Contraloría Servicios', kpi: 'Asociados', kpiFinal: 2.00, weight: 100 },
   { area: 'Contraloría Servicios', kpi: 'Cuentas De Mayor', kpiFinal: 2.10, weight: 110 },
-  { area: 'Contraloría Servicios', kpi: 'Conc. Ing. Contabilidad Electronica', kpiFinal: 3.00, weight: 120 },
+  { area: 'Contraloría Servicios', kpi: 'LIGADO', kpiFinal: 3.00, weight: 120 },
 
   // Contraloría Suburbia
   { area: 'Contraloría Suburbia', kpi: 'Inventario/Cto de vtas', kpiFinal: 3.00, weight: 180 },
@@ -130,18 +130,18 @@ const BASE_MATRIX_POINTS: Array<{ area: string; kpi: string; kpiFinal: number; w
   { area: 'Contraloría Suburbia', kpi: 'Intercias', kpiFinal: 3.50, weight: 340 },
   { area: 'Contraloría Suburbia', kpi: 'Asociados', kpiFinal: 2.10, weight: 150 },
   { area: 'Contraloría Suburbia', kpi: 'Cuentas De Mayor', kpiFinal: 2.10, weight: 130 },
-  { area: 'Contraloría Suburbia', kpi: 'Conc. Ing. Contabilidad Electronica', kpiFinal: 3.00, weight: 140 },
+  { area: 'Contraloría Suburbia', kpi: 'LIGADO', kpiFinal: 3.00, weight: 140 },
 
   // Contraloría Suburbia (Operaciones)
   { area: 'Contraloría Suburbia (Operaciones)', kpi: 'Inventario/Cto de vtas', kpiFinal: 1.00, weight: 60 },
   { area: 'Contraloría Suburbia (Operaciones)', kpi: 'IVA', kpiFinal: 2.30, weight: 90 },
   { area: 'Contraloría Suburbia (Operaciones)', kpi: 'ISR', kpiFinal: 1.50, weight: 70 },
   { area: 'Contraloría Suburbia (Operaciones)', kpi: 'Intercias', kpiFinal: 2.50, weight: 130 },
-  { area: 'Contraloría Suburbia (Operaciones)', kpi: 'Conc. Ing. Contabilidad Electronica', kpiFinal: 3.00, weight: 80 },
+  { area: 'Contraloría Suburbia (Operaciones)', kpi: 'LIGADO', kpiFinal: 3.00, weight: 80 },
 
   // Control De Ingresos
   { area: 'Control De Ingresos', kpi: 'Conc. Ing. Mercaderias (Difer. Sis)', kpiFinal: 3.10, weight: 320 },
-  { area: 'Control De Ingresos', kpi: 'Conc. Ing. Contabilidad Electronica', kpiFinal: 3.20, weight: 280 },
+  { area: 'Control De Ingresos', kpi: 'LIGADO', kpiFinal: 3.20, weight: 280 },
 
   // Finanzas Wholesale
   { area: 'Finanzas Wholesale', kpi: 'Cartera de Credito', kpiFinal: 3.40, weight: 220 },

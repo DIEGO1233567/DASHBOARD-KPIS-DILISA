@@ -144,11 +144,11 @@ const KPI_CRITERIA_DATA: KpiCriteria[] = [
     ],
   },
   {
-    id: 'conc-ing-contabilidad-electronica',
-    name: 'Conc. Ing. Contabilidad Electronica',
+    id: 'ligado',
+    name: 'LIGADO',
     category: 'Ingresos y Fiscal',
     maxScore: 3.0,
-    objective: 'Mide la exactitud en la conciliación de ingresos facturados vs contabilidad electrónica y timbrado fiscal SAT.',
+    objective: 'Mide la exactitud en la conciliación de ingresos facturados vs contabilidad electrónica y timbrado fiscal SAT (LIGADO).',
     scales: [
       { description: 'Sin diferencias o trabajos pendientes conciliados al 100%', score: 3.0, level: 'excelente' },
       { description: 'Con diferencias menores o aclaraciones en proceso', score: 2.0, level: 'regular' },

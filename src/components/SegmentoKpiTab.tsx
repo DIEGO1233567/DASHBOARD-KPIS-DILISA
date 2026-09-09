@@ -909,7 +909,7 @@ export const SegmentoKpiTab: React.FC<SegmentoKpiTabProps> = ({
                 if (upper.includes('INTERCIAS')) return { line1: 'Intercias' };
                 if (upper.includes('ASOCIADOS')) return { line1: 'Asociados' };
                 if (upper.includes('CUENTAS DE MAYOR') || upper.includes('BANCOS')) return { line1: 'Cuentas de', line2: 'Mayor' };
-                if (upper.includes('CONTABILIDAD')) return { line1: 'Conc. Contab.', line2: 'Electrónica' };
+                if (upper.includes('LIGADO') || upper.includes('CONTABILIDAD')) return { line1: 'LIGADO' };
                 if (upper.includes('MERCADERIAS') || upper.includes('MERCADERÍAS')) return { line1: 'Conc. Ing.', line2: 'Mercaderías' };
 
                 const words = kpiName.split(' ');

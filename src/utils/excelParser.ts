@@ -52,6 +52,26 @@ function normalizeHeader(str: string): string {
     .replace(/[^A-Z0-9]/g, '_');
 }
 
+/**
+ * Normalizes KPI names across tabs and file imports
+ * Replaces "Conc. Ing. Contabilidad Electronica" (and variations) with "LIGADO"
+ */
+export function normalizeKpiName(kpi: string): string {
+  if (!kpi) return kpi;
+  const upper = kpi.trim().toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  if (
+    upper === 'CONC. ING. CONTABILIDAD ELECTRONICA' ||
+    upper === 'CONC ING CONTABILIDAD ELECTRONICA' ||
+    upper.includes('CONTABILIDAD ELECTRONICA') ||
+    upper.includes('CONC. CONTAB. ELECTRONICA') ||
+    upper.includes('CONC CONTAB ELECTRONICA') ||
+    upper === 'LIGADO'
+  ) {
+    return 'LIGADO';
+  }
+  return kpi;
+}
+
 export function detectColumnMapping(headers: string[]): ColumnMapping {
   const mapping: ColumnMapping = { ...DEFAULT_COLUMN_MAPPING };
 
@@ -408,9 +428,9 @@ export async function parseExcelBuffer(
     // Extract KPI (Columns of matrix)
     let kpi = '';
     if (kpiColIndex !== -1 && row[kpiColIndex] !== undefined && row[kpiColIndex] !== null && String(row[kpiColIndex]).trim() !== '') {
-      kpi = cleanText(String(row[kpiColIndex]));
+      kpi = normalizeKpiName(cleanText(String(row[kpiColIndex])));
     } else {
-      kpi = cleanText(getValue('kpi')) || 'GENERAL';
+      kpi = normalizeKpiName(cleanText(getValue('kpi')) || 'GENERAL');
     }
 
     // Extract KPI Final numeric value
@@ -531,7 +551,7 @@ export function downloadTemplateWorkbook(sampleRecords?: KpiRecord[]) {
       'CONTRALOR': 'Jazmín Romero',
       'SEGMENTO COMERCIAL': 'Tenedora',
       'ÁREA RESPONSABLE': 'Contraloría Suburbia',
-      'KPI': 'Conc. Ing. Contabilidad Electronica',
+      'KPI': 'LIGADO',
       'KPI FINAL': 3.00,
       'META': 3.0,
       'COMENTARIOS': 'Auditoría Q2',

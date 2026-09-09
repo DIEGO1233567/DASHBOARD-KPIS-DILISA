@@ -17,7 +17,7 @@ const KPIS_LIST = [
   'Intercias',
   'Asociados',
   'Cuentas De Mayor',
-  'Conc. Ing. Contabilidad Electronica',
+  'LIGADO',
   'Conc. Ing. Mercaderias (Difer. Sis)',
 ];
 

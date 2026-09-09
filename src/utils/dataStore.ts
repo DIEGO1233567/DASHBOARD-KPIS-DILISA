@@ -1,4 +1,5 @@
 import { KpiRecord } from '../types';
+import { normalizeKpiName } from './excelParser';
 
 const DB_NAME = 'kpi_dashboard_db';
 const DB_VERSION = 1;
@@ -72,8 +73,12 @@ export async function loadRecordsFromStorage(): Promise<{
     return new Promise((resolve) => {
       request.onsuccess = () => {
         if (request.result && Array.isArray(request.result.records) && request.result.records.length > 0) {
+          const sanitizedRecords = request.result.records.map((r: KpiRecord) => {
+            const normalized = normalizeKpiName(r.kpi);
+            return normalized !== r.kpi ? { ...r, kpi: normalized } : r;
+          });
           resolve({
-            records: request.result.records,
+            records: sanitizedRecords,
             sourceName: request.result.sourceName || 'Google Sheets',
             timestamp: request.result.timestamp || Date.now(),
           });
