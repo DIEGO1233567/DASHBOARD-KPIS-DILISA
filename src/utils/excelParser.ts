@@ -54,20 +54,54 @@ function normalizeHeader(str: string): string {
 
 /**
  * Normalizes KPI names across tabs and file imports
- * Replaces "Conc. Ing. Contabilidad Electronica" (and variations) with "LIGADO"
+ * Normalizes "LIGADO CONT. ELECT." and "INTERCOMPAÑIAS"
  */
 export function normalizeKpiName(kpi: string): string {
   if (!kpi) return kpi;
   const upper = kpi.trim().toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  
   if (
     upper === 'CONC. ING. CONTABILIDAD ELECTRONICA' ||
     upper === 'CONC ING CONTABILIDAD ELECTRONICA' ||
     upper.includes('CONTABILIDAD ELECTRONICA') ||
     upper.includes('CONC. CONTAB. ELECTRONICA') ||
     upper.includes('CONC CONTAB ELECTRONICA') ||
+    upper.includes('LIGADO CONT. ELECT') ||
+    upper.includes('LIGADO CONT ELECT') ||
+    upper.includes('LIGADO') ||
     upper === 'LIGADO'
   ) {
-    return 'LIGADO';
+    return 'LIGADO CONT. ELECT.';
+  }
+  if (upper.includes('MERCADERIA') || upper.includes('DIFER. SIS') || upper.includes('DIFER SIS')) {
+    return 'Conc. Ing. Mercaderias (Difer. Sis)';
+  }
+  if (upper.includes('CARTERA DE CREDITO') || upper.includes('CARTERA')) {
+    return 'Cartera de Credito';
+  }
+  if (upper.includes('INVENTARIO') || upper.includes('CTO DE VTAS') || upper.includes('COSTO DE VENTA')) {
+    return 'Inventario/Cto de vtas';
+  }
+  if (upper.includes('PAGOS ANTICIPADOS') || upper.includes('PAGO ANTICIPADO')) {
+    return 'Pagos Anticipados';
+  }
+  if (upper.includes('PROVEEDOR') || upper.includes('CXP') || upper.includes('CUENTAS POR PAGAR')) {
+    return 'Proveedores';
+  }
+  if (upper === 'IVA' || upper.startsWith('IVA')) {
+    return 'IVA';
+  }
+  if (upper === 'ISR' || upper.startsWith('ISR')) {
+    return 'ISR';
+  }
+  if (upper.includes('INTERCIA') || upper.includes('INTERCOMPANIA')) {
+    return 'INTERCOMPAÑIAS';
+  }
+  if (upper.includes('ASOCIADO')) {
+    return 'Asociados';
+  }
+  if (upper.includes('CUENTAS DE MAYOR') || upper.includes('CTAS DE MAYOR') || upper.includes('MAYOR')) {
+    return 'Cuentas De Mayor';
   }
   return kpi;
 }
@@ -539,7 +573,7 @@ export function downloadTemplateWorkbook(sampleRecords?: KpiRecord[]) {
       'CONTRALOR': 'Gerardo García',
       'SEGMENTO COMERCIAL': 'Comercializadora',
       'ÁREA RESPONSABLE': 'Contraloría Corporativa',
-      'KPI': 'Intercias',
+      'KPI': 'INTERCOMPAÑIAS',
       'KPI FINAL': 3.40,
       'META': 3.0,
       'COMENTARIOS': 'Conciliación interco completada',
@@ -551,7 +585,7 @@ export function downloadTemplateWorkbook(sampleRecords?: KpiRecord[]) {
       'CONTRALOR': 'Jazmín Romero',
       'SEGMENTO COMERCIAL': 'Tenedora',
       'ÁREA RESPONSABLE': 'Contraloría Suburbia',
-      'KPI': 'LIGADO',
+      'KPI': 'LIGADO CONT. ELECT.',
       'KPI FINAL': 3.00,
       'META': 3.0,
       'COMENTARIOS': 'Auditoría Q2',

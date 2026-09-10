@@ -7,18 +7,27 @@ interface CaratulaCoverProps {
   year?: number | string;
 }
 
-const KPIS_LIST = [
-  'Cartera de Credito',
-  'Inventario/Cto de vtas',
-  'Pagos Anticipados',
-  'Proveedores',
-  'IVA',
-  'ISR',
-  'Intercias',
-  'Asociados',
-  'Cuentas De Mayor',
-  'LIGADO',
-  'Conc. Ing. Mercaderias (Difer. Sis)',
+interface KpiItem {
+  id: number;
+  label: string;
+  dataKey: string;
+}
+
+const KPIS_COL1: KpiItem[] = [
+  { id: 1, label: 'CARTERA DE CREDITO', dataKey: 'Cartera de Credito' },
+  { id: 2, label: 'INVENTARIO/CTO DE VTAS', dataKey: 'Inventario/Cto de vtas' },
+  { id: 3, label: 'PAGOS ANTICIPADOS', dataKey: 'Pagos Anticipados' },
+  { id: 4, label: 'PROVEEDORES', dataKey: 'Proveedores' },
+  { id: 5, label: 'IVA', dataKey: 'IVA' },
+  { id: 6, label: 'ISR', dataKey: 'ISR' },
+];
+
+const KPIS_COL2: KpiItem[] = [
+  { id: 7, label: 'INTERCOMPAÑIAS', dataKey: 'INTERCOMPAÑIAS' },
+  { id: 8, label: 'ASOCIADOS', dataKey: 'Asociados' },
+  { id: 9, label: 'CUENTAS DE MAYOR', dataKey: 'Cuentas De Mayor' },
+  { id: 10, label: 'LIGADO CONT. ELECT.', dataKey: 'LIGADO CONT. ELECT.' },
+  { id: 11, label: 'CONC. ING. MERCADERIAS (DIFER. SIS)', dataKey: 'Conc. Ing. Mercaderias (Difer. Sis)' },
 ];
 
 export const CaratulaCover: React.FC<CaratulaCoverProps> = ({
@@ -145,53 +154,53 @@ export const CaratulaCover: React.FC<CaratulaCoverProps> = ({
                 </span>
               </div>
 
-              {/* 2-Column Vertical Flow List of KPIs (Col 1: 1-6, Col 2: 7-12) */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
-                {/* Columna Izquierda: 1 al 6 */}
-                <div className="flex flex-col gap-3.5">
-                  {KPIS_LIST.slice(0, 6).map((kpi, idx) => (
+              {/* 2-Column Vertical Flow List of KPIs matching Institutional Cover */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3.5">
+                {/* Columna Izquierda: 1 a 6 */}
+                <div className="flex flex-col gap-2.5">
+                  {KPIS_COL1.map((item) => (
                     <div
-                      key={kpi}
+                      key={item.id}
                       onClick={() => {
-                        if (onSelectKpi) onSelectKpi(kpi);
+                        if (onSelectKpi) onSelectKpi(item.dataKey);
                         else onGoToDashboard();
                       }}
-                      className="flex items-center gap-3.5 text-white py-1 px-1.5 rounded-xl hover:bg-white/20 transition-all cursor-pointer group"
-                      title={`Ir a ${kpi} en Resumen Ejecutivo`}
+                      className="flex items-center gap-3 text-white py-0.5 px-1.5 rounded-xl hover:bg-white/20 transition-all cursor-pointer group"
+                      title={`Ir a ${item.label} en Resumen Ejecutivo`}
                     >
-                      <span className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-[#FF1A8B] to-[#E1007A] text-white font-mono text-sm sm:text-base font-black flex items-center justify-center shrink-0 shadow-lg border border-white/40 group-hover:scale-110 transition-transform">
-                        {idx + 1}
+                      <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-gradient-to-br from-[#FF1A8B] to-[#E1007A] text-white font-mono text-xs sm:text-sm font-black flex items-center justify-center shrink-0 shadow-md border border-white/40 group-hover:scale-110 transition-transform">
+                        {item.id}
                       </span>
                       <span
-                        className="text-[17px] sm:text-[21px] lg:text-[26px] font-semibold text-white tracking-wide uppercase leading-tight drop-shadow-md group-hover:text-[#FFB347] transition-colors"
+                        className="text-[15px] sm:text-[18px] lg:text-[20px] font-semibold text-white tracking-wide uppercase leading-tight drop-shadow-md group-hover:text-[#FFB347] transition-colors"
                         style={{ fontFamily: "'Cinzel', 'Playfair Display', 'Times New Roman', Georgia, serif" }}
                       >
-                        {kpi}
+                        {item.label}
                       </span>
                     </div>
                   ))}
                 </div>
 
-                {/* Columna Derecha: 7 al 12 */}
-                <div className="flex flex-col gap-3.5">
-                  {KPIS_LIST.slice(6, 12).map((kpi, idx) => (
+                {/* Columna Derecha: 7 a 11 */}
+                <div className="flex flex-col gap-2.5">
+                  {KPIS_COL2.map((item) => (
                     <div
-                      key={kpi}
+                      key={item.id}
                       onClick={() => {
-                        if (onSelectKpi) onSelectKpi(kpi);
+                        if (onSelectKpi) onSelectKpi(item.dataKey);
                         else onGoToDashboard();
                       }}
-                      className="flex items-center gap-3.5 text-white py-1 px-1.5 rounded-xl hover:bg-white/20 transition-all cursor-pointer group"
-                      title={`Ir a ${kpi} en Resumen Ejecutivo`}
+                      className="flex items-center gap-3 text-white py-0.5 px-1.5 rounded-xl hover:bg-white/20 transition-all cursor-pointer group"
+                      title={`Ir a ${item.label} en Resumen Ejecutivo`}
                     >
-                      <span className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-[#FF1A8B] to-[#E1007A] text-white font-mono text-sm sm:text-base font-black flex items-center justify-center shrink-0 shadow-lg border border-white/40 group-hover:scale-110 transition-transform">
-                        {idx + 7}
+                      <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-gradient-to-br from-[#FF1A8B] to-[#E1007A] text-white font-mono text-xs sm:text-sm font-black flex items-center justify-center shrink-0 shadow-md border border-white/40 group-hover:scale-110 transition-transform">
+                        {item.id}
                       </span>
                       <span
-                        className="text-[17px] sm:text-[21px] lg:text-[26px] font-semibold text-white tracking-wide uppercase leading-tight drop-shadow-md group-hover:text-[#FFB347] transition-colors"
+                        className="text-[15px] sm:text-[18px] lg:text-[20px] font-semibold text-white tracking-wide uppercase leading-tight drop-shadow-md group-hover:text-[#FFB347] transition-colors"
                         style={{ fontFamily: "'Cinzel', 'Playfair Display', 'Times New Roman', Georgia, serif" }}
                       >
-                        {kpi}
+                        {item.label}
                       </span>
                     </div>
                   ))}

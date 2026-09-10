@@ -7,10 +7,10 @@ export const INITIAL_KPIS = [
   'Proveedores',
   'IVA',
   'ISR',
-  'Intercias',
+  'INTERCOMPAÑIAS',
   'Asociados',
   'Cuentas De Mayor',
-  'LIGADO',
+  'LIGADO CONT. ELECT.',
   'Conc. Ing. Mercaderias (Difer. Sis)',
 ];
 
@@ -67,29 +67,30 @@ export const DEFAULT_SEGMENTOS = [
   'Suburbia',
 ];
 
-// Base matrix points for the 11 updated KPIs
+// Base matrix points for the 11 official Carátula KPIs
 const BASE_MATRIX_POINTS: Array<{ area: string; kpi: string; kpiFinal: number; weight: number }> = [
   // Contraloría Boutiques
   { area: 'Contraloría Boutiques', kpi: 'Inventario/Cto de vtas', kpiFinal: 2.80, weight: 120 },
   { area: 'Contraloría Boutiques', kpi: 'Proveedores', kpiFinal: 2.90, weight: 130 },
   { area: 'Contraloría Boutiques', kpi: 'IVA', kpiFinal: 3.50, weight: 110 },
   { area: 'Contraloría Boutiques', kpi: 'ISR', kpiFinal: 1.50, weight: 60 },
-  { area: 'Contraloría Boutiques', kpi: 'Intercias', kpiFinal: 2.70, weight: 140 },
+  { area: 'Contraloría Boutiques', kpi: 'INTERCOMPAÑIAS', kpiFinal: 2.70, weight: 140 },
   { area: 'Contraloría Boutiques', kpi: 'Asociados', kpiFinal: 1.70, weight: 120 },
-  { area: 'Contraloría Boutiques', kpi: 'LIGADO', kpiFinal: 1.30, weight: 80 },
+  { area: 'Contraloría Boutiques', kpi: 'LIGADO CONT. ELECT.', kpiFinal: 1.30, weight: 80 },
 
   // Contraloría Corporativa
-  { area: 'Contraloría Corporativa', kpi: 'Cartera de Credito', kpiFinal: 3.00, weight: 140 },
-  { area: 'Contraloría Corporativa', kpi: 'Pagos Anticipados', kpiFinal: 3.20, weight: 110 },
+  { area: 'Contraloría Corporativa', kpi: 'Cartera de Credito', kpiFinal: 2.50, weight: 140 },
+  { area: 'Contraloría Corporativa', kpi: 'Pagos Anticipados', kpiFinal: 3.00, weight: 110 },
   { area: 'Contraloría Corporativa', kpi: 'Proveedores', kpiFinal: 3.00, weight: 150 },
   { area: 'Contraloría Corporativa', kpi: 'IVA', kpiFinal: 2.00, weight: 130 },
   { area: 'Contraloría Corporativa', kpi: 'ISR', kpiFinal: 3.50, weight: 120 },
-  { area: 'Contraloría Corporativa', kpi: 'Intercias', kpiFinal: 3.40, weight: 350 },
+  { area: 'Contraloría Corporativa', kpi: 'INTERCOMPAÑIAS', kpiFinal: 3.40, weight: 350 },
   { area: 'Contraloría Corporativa', kpi: 'Asociados', kpiFinal: 2.40, weight: 150 },
   { area: 'Contraloría Corporativa', kpi: 'Cuentas De Mayor', kpiFinal: 2.10, weight: 200 },
+  { area: 'Contraloría Corporativa', kpi: 'LIGADO CONT. ELECT.', kpiFinal: 2.90, weight: 200 },
 
   // Contraloría Fondos
-  { area: 'Contraloría Fondos', kpi: 'Intercias', kpiFinal: 2.90, weight: 110 },
+  { area: 'Contraloría Fondos', kpi: 'INTERCOMPAÑIAS', kpiFinal: 2.90, weight: 110 },
   { area: 'Contraloría Fondos', kpi: 'Asociados', kpiFinal: 2.20, weight: 90 },
   { area: 'Contraloría Fondos', kpi: 'Cuentas De Mayor', kpiFinal: 2.80, weight: 100 },
 
@@ -98,54 +99,54 @@ const BASE_MATRIX_POINTS: Array<{ area: string; kpi: string; kpiFinal: number; w
   { area: 'Contraloría Inmobiliaria', kpi: 'Proveedores', kpiFinal: 2.80, weight: 120 },
   { area: 'Contraloría Inmobiliaria', kpi: 'IVA', kpiFinal: 2.60, weight: 115 },
   { area: 'Contraloría Inmobiliaria', kpi: 'ISR', kpiFinal: 2.20, weight: 95 },
-  { area: 'Contraloría Inmobiliaria', kpi: 'Intercias', kpiFinal: 3.50, weight: 220 },
+  { area: 'Contraloría Inmobiliaria', kpi: 'INTERCOMPAÑIAS', kpiFinal: 3.50, weight: 220 },
   { area: 'Contraloría Inmobiliaria', kpi: 'Asociados', kpiFinal: 2.20, weight: 100 },
   { area: 'Contraloría Inmobiliaria', kpi: 'Cuentas De Mayor', kpiFinal: 2.10, weight: 140 },
-  { area: 'Contraloría Inmobiliaria', kpi: 'LIGADO', kpiFinal: 3.00, weight: 120 },
+  { area: 'Contraloría Inmobiliaria', kpi: 'LIGADO CONT. ELECT.', kpiFinal: 3.00, weight: 120 },
 
   // Contraloría Operativa
   { area: 'Contraloría Operativa', kpi: 'Inventario/Cto de vtas', kpiFinal: 3.10, weight: 140 },
   { area: 'Contraloría Operativa', kpi: 'Proveedores', kpiFinal: 2.90, weight: 130 },
   { area: 'Contraloría Operativa', kpi: 'IVA', kpiFinal: 3.00, weight: 140 },
   { area: 'Contraloría Operativa', kpi: 'ISR', kpiFinal: 2.10, weight: 90 },
-  { area: 'Contraloría Operativa', kpi: 'Intercias', kpiFinal: 3.50, weight: 260 },
+  { area: 'Contraloría Operativa', kpi: 'INTERCOMPAÑIAS', kpiFinal: 3.50, weight: 260 },
   { area: 'Contraloría Operativa', kpi: 'Asociados', kpiFinal: 1.90, weight: 110 },
-  { area: 'Contraloría Operativa', kpi: 'LIGADO', kpiFinal: 3.00, weight: 130 },
+  { area: 'Contraloría Operativa', kpi: 'LIGADO CONT. ELECT.', kpiFinal: 3.00, weight: 130 },
 
   // Contraloría Servicios
   { area: 'Contraloría Servicios', kpi: 'Pagos Anticipados', kpiFinal: 2.90, weight: 130 },
   { area: 'Contraloría Servicios', kpi: 'Proveedores', kpiFinal: 2.70, weight: 120 },
   { area: 'Contraloría Servicios', kpi: 'IVA', kpiFinal: 2.60, weight: 110 },
   { area: 'Contraloría Servicios', kpi: 'ISR', kpiFinal: 2.20, weight: 90 },
-  { area: 'Contraloría Servicios', kpi: 'Intercias', kpiFinal: 3.30, weight: 210 },
+  { area: 'Contraloría Servicios', kpi: 'INTERCOMPAÑIAS', kpiFinal: 3.30, weight: 210 },
   { area: 'Contraloría Servicios', kpi: 'Asociados', kpiFinal: 2.00, weight: 100 },
   { area: 'Contraloría Servicios', kpi: 'Cuentas De Mayor', kpiFinal: 2.10, weight: 110 },
-  { area: 'Contraloría Servicios', kpi: 'LIGADO', kpiFinal: 3.00, weight: 120 },
+  { area: 'Contraloría Servicios', kpi: 'LIGADO CONT. ELECT.', kpiFinal: 3.00, weight: 120 },
 
   // Contraloría Suburbia
   { area: 'Contraloría Suburbia', kpi: 'Inventario/Cto de vtas', kpiFinal: 3.00, weight: 180 },
   { area: 'Contraloría Suburbia', kpi: 'Proveedores', kpiFinal: 2.90, weight: 150 },
   { area: 'Contraloría Suburbia', kpi: 'IVA', kpiFinal: 2.30, weight: 120 },
   { area: 'Contraloría Suburbia', kpi: 'ISR', kpiFinal: 2.80, weight: 160 },
-  { area: 'Contraloría Suburbia', kpi: 'Intercias', kpiFinal: 3.50, weight: 340 },
+  { area: 'Contraloría Suburbia', kpi: 'INTERCOMPAÑIAS', kpiFinal: 3.50, weight: 340 },
   { area: 'Contraloría Suburbia', kpi: 'Asociados', kpiFinal: 2.10, weight: 150 },
   { area: 'Contraloría Suburbia', kpi: 'Cuentas De Mayor', kpiFinal: 2.10, weight: 130 },
-  { area: 'Contraloría Suburbia', kpi: 'LIGADO', kpiFinal: 3.00, weight: 140 },
+  { area: 'Contraloría Suburbia', kpi: 'LIGADO CONT. ELECT.', kpiFinal: 3.00, weight: 140 },
 
   // Contraloría Suburbia (Operaciones)
   { area: 'Contraloría Suburbia (Operaciones)', kpi: 'Inventario/Cto de vtas', kpiFinal: 1.00, weight: 60 },
   { area: 'Contraloría Suburbia (Operaciones)', kpi: 'IVA', kpiFinal: 2.30, weight: 90 },
   { area: 'Contraloría Suburbia (Operaciones)', kpi: 'ISR', kpiFinal: 1.50, weight: 70 },
-  { area: 'Contraloría Suburbia (Operaciones)', kpi: 'Intercias', kpiFinal: 2.50, weight: 130 },
-  { area: 'Contraloría Suburbia (Operaciones)', kpi: 'LIGADO', kpiFinal: 3.00, weight: 80 },
+  { area: 'Contraloría Suburbia (Operaciones)', kpi: 'INTERCOMPAÑIAS', kpiFinal: 2.50, weight: 130 },
+  { area: 'Contraloría Suburbia (Operaciones)', kpi: 'LIGADO CONT. ELECT.', kpiFinal: 3.00, weight: 80 },
 
   // Control De Ingresos
   { area: 'Control De Ingresos', kpi: 'Conc. Ing. Mercaderias (Difer. Sis)', kpiFinal: 3.10, weight: 320 },
-  { area: 'Control De Ingresos', kpi: 'LIGADO', kpiFinal: 3.20, weight: 280 },
+  { area: 'Control De Ingresos', kpi: 'LIGADO CONT. ELECT.', kpiFinal: 3.20, weight: 280 },
 
   // Finanzas Wholesale
-  { area: 'Finanzas Wholesale', kpi: 'Cartera de Credito', kpiFinal: 3.40, weight: 220 },
-  { area: 'Finanzas Wholesale', kpi: 'Intercias', kpiFinal: 3.50, weight: 280 },
+  { area: 'Finanzas Wholesale', kpi: 'Cartera de Credito', kpiFinal: 2.50, weight: 220 },
+  { area: 'Finanzas Wholesale', kpi: 'INTERCOMPAÑIAS', kpiFinal: 3.50, weight: 280 },
   { area: 'Finanzas Wholesale', kpi: 'Asociados', kpiFinal: 2.10, weight: 110 },
 
   // POR DEFINIR

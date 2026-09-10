@@ -894,7 +894,7 @@ export const SegmentoKpiTab: React.FC<SegmentoKpiTabProps> = ({
               const plotWidth = svgWidth - paddingLeft - paddingRight;
               const plotHeight = svgHeight - paddingTop - paddingBottom;
 
-              const maxScore = 3.5;
+              const maxScore = 4.0;
               const minScore = 0;
 
               // Helper for clean 2-line horizontal KPI label formatting
@@ -906,11 +906,15 @@ export const SegmentoKpiTab: React.FC<SegmentoKpiTabProps> = ({
                 if (upper.includes('PROVEEDORES')) return { line1: 'Proveedores' };
                 if (upper.includes('IVA')) return { line1: 'IVA' };
                 if (upper.includes('ISR')) return { line1: 'ISR' };
-                if (upper.includes('INTERCIAS')) return { line1: 'Intercias' };
+                if (upper.includes('INTERCOMPANIA') || upper.includes('INTERCIA')) return { line1: 'INTERCOMPAÑIAS' };
                 if (upper.includes('ASOCIADOS')) return { line1: 'Asociados' };
                 if (upper.includes('CUENTAS DE MAYOR') || upper.includes('BANCOS')) return { line1: 'Cuentas de', line2: 'Mayor' };
-                if (upper.includes('LIGADO') || upper.includes('CONTABILIDAD')) return { line1: 'LIGADO' };
+                if (upper.includes('LIGADO') || upper.includes('CONTABILIDAD')) return { line1: 'LIGADO', line2: 'CONT. ELECT.' };
                 if (upper.includes('MERCADERIAS') || upper.includes('MERCADERÍAS')) return { line1: 'Conc. Ing.', line2: 'Mercaderías' };
+                if (upper.includes('DOMICILIACION') || upper.includes('DOMICILIACIÓN')) return { line1: 'Incorporación', line2: 'Domiciliación' };
+                if (upper.includes('PROPUESTAS')) return { line1: 'Propuestas', line2: 'de Pago' };
+                if (upper.includes('REGISTRO FACTURAS NACIONAL') || upper.includes('FACTURAS NACIONAL')) return { line1: 'Reg. Facturas', line2: 'Nacional' };
+                if (upper.includes('REGISTRO FACTURAS IMPORTACION') || upper.includes('REGISTRO FACTURAS IMPORTACIÓN') || upper.includes('FACTURAS IMPORTACION') || upper.includes('FACTURAS IMPORTACIÓN')) return { line1: 'Reg. Facturas', line2: 'Importación' };
 
                 const words = kpiName.split(' ');
                 if (words.length <= 2) return { line1: kpiName };
@@ -1003,7 +1007,7 @@ export const SegmentoKpiTab: React.FC<SegmentoKpiTabProps> = ({
                       </defs>
 
                       {/* Horizontal Grid Lines */}
-                      {[0, 1.0, 2.0, 3.0, 3.5].map((level) => {
+                      {[0, 1.0, 2.0, 3.0, 4.0].map((level) => {
                         const y = getY(level);
                         return (
                           <g key={level}>
