@@ -15,6 +15,7 @@ import { KpiSummaryTable } from './components/KpiSummaryTable';
 import { SegmentoKpiTab } from './components/SegmentoKpiTab';
 import { CriteriosEvaluacionTab } from './components/CriteriosEvaluacionTab';
 import { CaratulaCover } from './components/CaratulaCover';
+import { KpiDashboardDropdown } from './components/KpiDashboardDropdown';
 import { FileUploadModal } from './components/FileUploadModal';
 import { DataGridModal } from './components/DataGridModal';
 import { DriveSyncModal } from './components/DriveSyncModal';
@@ -558,6 +559,13 @@ export default function App() {
               <BookOpen className={`w-4.5 h-4.5 ${activeTab === 'criterios' ? 'text-orange-300' : 'text-[#8A185B]'}`} />
               <span>Criterios de Evaluación</span>
             </button>
+
+            {/* Botón y Dropdown: KPI'S individuales (AI Studio) a la misma altura de las pestañas */}
+            <KpiDashboardDropdown
+              onSelectKpi={(kpiKey) => {
+                setDashboardFilters((prev) => ({ ...prev, selectedKpi: kpiKey }));
+              }}
+            />
           </nav>
 
           {/* Quick Drive Status Bar Action */}
