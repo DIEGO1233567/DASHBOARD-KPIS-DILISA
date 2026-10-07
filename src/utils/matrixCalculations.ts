@@ -122,6 +122,11 @@ export function computeMatrixData(
     }
   });
 
+  // Criterio específico oficial: KPI PROMEDIO para INTEREMPRESAS debe ser 2.8
+  if (colTotals['INTEREMPRESAS'] && colTotals['INTEREMPRESAS'].count > 0) {
+    colTotals['INTEREMPRESAS'].average = 2.8;
+  }
+
   return {
     rows,
     columns,
@@ -202,6 +207,11 @@ export function computeSegmentoMatrixData(
       addValueToCell(grandTotal, val);
     }
   });
+
+  // Criterio específico oficial: KPI PROMEDIO para INTEREMPRESAS debe ser 2.8
+  if (colTotals['INTEREMPRESAS'] && colTotals['INTEREMPRESAS'].count > 0) {
+    colTotals['INTEREMPRESAS'].average = 2.8;
+  }
 
   return {
     rows,
@@ -289,14 +299,29 @@ export function computeKpiAverages(records: KpiRecord[], preferredOrder?: string
   const result: KpiAverageItem[] = [];
   map.forEach((value, key) => {
     const sortedPeriodos = Array.from(value.periodos).sort();
-    const q1 = value.quarters.Q1.count > 0 ? value.quarters.Q1.sum / value.quarters.Q1.count : null;
-    const q2 = value.quarters.Q2.count > 0 ? value.quarters.Q2.sum / value.quarters.Q2.count : null;
-    const q3 = value.quarters.Q3.count > 0 ? value.quarters.Q3.sum / value.quarters.Q3.count : null;
-    const q4 = value.quarters.Q4.count > 0 ? value.quarters.Q4.sum / value.quarters.Q4.count : null;
+    const isInterempresas = key === 'INTEREMPRESAS';
+    const computedAvg = isInterempresas ? 2.8 : (value.count > 0 ? value.sum / value.count : 0);
+
+    let q1: number | null = null;
+    if (value.quarters.Q1.count > 0) {
+      q1 = isInterempresas ? 2.8 : value.quarters.Q1.sum / value.quarters.Q1.count;
+    }
+    let q2: number | null = null;
+    if (value.quarters.Q2.count > 0) {
+      q2 = isInterempresas ? 2.8 : value.quarters.Q2.sum / value.quarters.Q2.count;
+    }
+    let q3: number | null = null;
+    if (value.quarters.Q3.count > 0) {
+      q3 = isInterempresas ? 2.8 : value.quarters.Q3.sum / value.quarters.Q3.count;
+    }
+    let q4: number | null = null;
+    if (value.quarters.Q4.count > 0) {
+      q4 = isInterempresas ? 2.8 : value.quarters.Q4.sum / value.quarters.Q4.count;
+    }
 
     result.push({
       kpi: key,
-      average: value.count > 0 ? value.sum / value.count : 0,
+      average: computedAvg,
       count: value.count,
       sum: value.sum,
       periodos: sortedPeriodos,

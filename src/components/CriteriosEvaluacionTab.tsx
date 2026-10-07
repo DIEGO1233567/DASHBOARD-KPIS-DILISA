@@ -31,7 +31,7 @@ interface KpiCriteria {
 const KPI_CRITERIA_DATA: KpiCriteria[] = [
   {
     id: 'asociados-ctas-mayor',
-    name: "KPI'S ASOCIADOS y CTAS DE MAYOR",
+    name: 'ASOCIADOS Y CTAS DE MAYOR',
     category: 'Cuentas y Partidas Abiertas',
     maxScore: 3.0,
     objective: 'Evalúa la clasificación y depuración de partidas por antigüedad en cuentas con asociados y balance de mayor general.',
@@ -70,10 +70,10 @@ const KPI_CRITERIA_DATA: KpiCriteria[] = [
   },
   {
     id: 'intercias',
-    name: 'INTERCOMPAÑIAS',
-    category: 'Operaciones Intercompañía',
+    name: 'INTEREMPRESAS',
+    category: 'Operaciones Interempresas',
     maxScore: 3.5,
-    objective: 'Monitorea el tiempo de permanencia y conciliación de Partidas Abiertas (PA) entre intercompañías del grupo.',
+    objective: 'Monitorea el tiempo de permanencia y conciliación de Partidas Abiertas (PA) entre interempresas del grupo.',
     scales: [
       { description: 'PA Abiertas de 0-30 días', score: 3.5, level: 'excelente' },
       { description: 'PA Abiertas de 31-60 días', score: 3.0, level: 'excelente' },
@@ -106,7 +106,7 @@ const KPI_CRITERIA_DATA: KpiCriteria[] = [
   },
   {
     id: 'conc-ing-mercaderias',
-    name: 'CONC. ING. MERCADERIAS (DIFER. SIS)',
+    name: 'CONCILIACIÓN DE INGRESOS MERCADERIAS PDM-BW-CO-ECC',
     category: 'Ingresos y Mercaderías',
     maxScore: 3.5,
     objective: 'Supervisa el umbral monetario de diferencias de sistema tolerables en conciliación de ingresos por mercaderías.',
@@ -175,6 +175,7 @@ const KPI_CRITERIA_DATA: KpiCriteria[] = [
       { description: 'Ligado 97% - 99.9%', score: 2.9, level: 'bueno' },
       { description: 'Ligado 95% - 96.9%', score: 2.8, level: 'bueno' },
       { description: 'Ligado 85% - 94.9%', score: 2.0, level: 'regular' },
+      { description: 'Ligado 0% - 84.9%', score: 1.0, level: 'critico' },
     ],
   },
   {

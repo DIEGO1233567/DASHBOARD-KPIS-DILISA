@@ -54,7 +54,7 @@ function normalizeHeader(str: string): string {
 
 /**
  * Normalizes KPI names across tabs and file imports
- * Normalizes "LIGADO CONT. ELECT." and "INTERCOMPAÑIAS"
+ * Normalizes "LIGADO CONT. ELECT." and "INTEREMPRESAS"
  */
 export function normalizeKpiName(kpi: string): string {
   if (!kpi) return kpi;
@@ -73,8 +73,14 @@ export function normalizeKpiName(kpi: string): string {
   ) {
     return 'LIGADO CONT. ELECT.';
   }
-  if (upper.includes('MERCADERIA') || upper.includes('DIFER. SIS') || upper.includes('DIFER SIS')) {
-    return 'Conc. Ing. Mercaderias (Difer. Sis)';
+  if (
+    upper.includes('MERCADERIA') ||
+    upper.includes('DIFER. SIS') ||
+    upper.includes('DIFER SIS') ||
+    upper.includes('PDM-BW-CO-ECC') ||
+    upper.includes('CONCILIACION DE INGRESOS')
+  ) {
+    return 'CONCILIACIÓN DE INGRESOS MERCADERIAS PDM-BW-CO-ECC';
   }
   if (upper.includes('CARTERA DE CREDITO') || upper.includes('CARTERA')) {
     return 'Cartera de Credito';
@@ -94,8 +100,8 @@ export function normalizeKpiName(kpi: string): string {
   if (upper === 'ISR' || upper.startsWith('ISR')) {
     return 'ISR';
   }
-  if (upper.includes('INTERCIA') || upper.includes('INTERCOMPANIA')) {
-    return 'INTERCOMPAÑIAS';
+  if (upper.includes('INTEREMPRESA') || upper.includes('INTERCIA') || upper.includes('INTERCOMPANIA')) {
+    return 'INTEREMPRESAS';
   }
   if (upper.includes('ASOCIADO')) {
     return 'Asociados';
@@ -482,6 +488,17 @@ export async function parseExcelBuffer(
       kpiFinal = getNumberValue('kpiFinal');
     }
 
+    // Para INTEREMPRESAS: asegurar que la columna F (index 5) se tome en cuenta si contiene la calificación numérica
+    if (kpi === 'INTEREMPRESAS' && (kpiFinal === 0 || kpiFinal > 4.0)) {
+      if (row[5] !== undefined && row[5] !== null && row[5] !== '') {
+        let colFVal = row[5];
+        let num = typeof colFVal === 'number' ? colFVal : parseFloat(String(colFVal).replace(/,/g, '.').replace(/[^0-9.-]/g, ''));
+        if (!isNaN(num) && num > 0 && num <= 4.0) {
+          kpiFinal = num;
+        }
+      }
+    }
+
     // Extract Sociedad strictly prioritizing Column F / CONCATENADO
     let sociedad = '';
     if (concatColIndex !== -1 && row[concatColIndex] !== undefined && row[concatColIndex] !== null && String(row[concatColIndex]).trim() !== '') {
@@ -573,10 +590,10 @@ export function downloadTemplateWorkbook(sampleRecords?: KpiRecord[]) {
       'CONTRALOR': 'Gerardo García',
       'SEGMENTO COMERCIAL': 'Comercializadora',
       'ÁREA RESPONSABLE': 'Contraloría Corporativa',
-      'KPI': 'INTERCOMPAÑIAS',
-      'KPI FINAL': 3.40,
+      'KPI': 'INTEREMPRESAS',
+      'KPI FINAL': 2.80,
       'META': 3.0,
-      'COMENTARIOS': 'Conciliación interco completada',
+      'COMENTARIOS': 'Conciliación interempresas completada',
     },
     {
       'AÑO': 2026,
@@ -597,7 +614,7 @@ export function downloadTemplateWorkbook(sampleRecords?: KpiRecord[]) {
       'CONTRALOR': 'Jazmín Romero',
       'SEGMENTO COMERCIAL': 'Comercializadora',
       'ÁREA RESPONSABLE': 'Control De Ingresos',
-      'KPI': 'Conc. Ing. Mercaderias (Difer. Sis)',
+      'KPI': 'CONCILIACIÓN DE INGRESOS MERCADERIAS PDM-BW-CO-ECC',
       'KPI FINAL': 3.10,
       'META': 3.0,
       'COMENTARIOS': 'Revisión de conciliación mercaderías Q2',

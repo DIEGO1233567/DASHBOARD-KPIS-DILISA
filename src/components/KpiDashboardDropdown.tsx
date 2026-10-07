@@ -63,10 +63,10 @@ export const CARATULA_KPIS: KpiDropdownItem[] = [
   },
   {
     id: 7,
-    label: 'INTERCOMPAÑIAS',
-    dataKey: 'INTERCOMPAÑIAS',
+    label: 'INTEREMPRESAS',
+    dataKey: 'INTEREMPRESAS',
     defaultUrl: 'https://aistudio.google.com/',
-    description: 'Dashboard de Partidas Abiertas Intercompañías',
+    description: 'Dashboard de Partidas Abiertas Interempresas',
   },
   {
     id: 8,
@@ -91,10 +91,10 @@ export const CARATULA_KPIS: KpiDropdownItem[] = [
   },
   {
     id: 11,
-    label: 'CONC. ING. MERCADERIAS (DIFER. SIS)',
-    dataKey: 'Conc. Ing. Mercaderias (Difer. Sis)',
+    label: 'CONCILIACIÓN DE INGRESOS MERCADERIAS PDM-BW-CO-ECC',
+    dataKey: 'CONCILIACIÓN DE INGRESOS MERCADERIAS PDM-BW-CO-ECC',
     defaultUrl: 'https://aistudio.google.com/',
-    description: 'Dashboard de Conciliación Ingresos Mercaderías vs Sistemas',
+    description: 'Dashboard de Conciliación de Ingresos Mercaderías PDM-BW-CO-ECC',
   },
   {
     id: 12,

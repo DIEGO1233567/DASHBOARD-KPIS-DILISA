@@ -15,7 +15,7 @@ import { KpiSummaryTable } from './components/KpiSummaryTable';
 import { SegmentoKpiTab } from './components/SegmentoKpiTab';
 import { CriteriosEvaluacionTab } from './components/CriteriosEvaluacionTab';
 import { CaratulaCover } from './components/CaratulaCover';
-import { KpiDashboardDropdown } from './components/KpiDashboardDropdown';
+import { KpiIndividualesEmbed } from './components/KpiIndividualesEmbed';
 import { FileUploadModal } from './components/FileUploadModal';
 import { DataGridModal } from './components/DataGridModal';
 import { DriveSyncModal } from './components/DriveSyncModal';
@@ -32,12 +32,13 @@ import {
   Cloud,
   CheckCircle2,
   AlertCircle,
+  Sparkles,
   X,
 } from 'lucide-react';
 
 export default function App() {
-  // Navigation Tabs: 'caratula' | 'dashboard' | 'consolidado' | 'segmento' | 'criterios'
-  const [activeTab, setActiveTab] = useState<'caratula' | 'dashboard' | 'consolidado' | 'segmento' | 'criterios'>('dashboard');
+  // Navigation Tabs: 'caratula' | 'dashboard' | 'consolidado' | 'segmento' | 'criterios' | 'kpi_individuales'
+  const [activeTab, setActiveTab] = useState<'caratula' | 'dashboard' | 'consolidado' | 'segmento' | 'criterios' | 'kpi_individuales'>('dashboard');
 
   const [records, setRecords] = useState<KpiRecord[]>(() => generateInitialDataset(104847));
   const [isGeneratingLarge, setIsGeneratingLarge] = useState(false);
@@ -560,12 +561,28 @@ export default function App() {
               <span>Criterios de Evaluación</span>
             </button>
 
-            {/* Botón y Dropdown: KPI'S individuales (AI Studio) a la misma altura de las pestañas */}
-            <KpiDashboardDropdown
-              onSelectKpi={(kpiKey) => {
-                setDashboardFilters((prev) => ({ ...prev, selectedKpi: kpiKey }));
-              }}
-            />
+            {/* Tab 6: KPI'S individuales AI STUDIO (Incrustado nativo) */}
+            <button
+              id="tab-kpi-individuales"
+              onClick={() => setActiveTab('kpi_individuales')}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-[14px] sm:text-[16px] transition-all cursor-pointer ${
+                activeTab === 'kpi_individuales'
+                  ? 'bg-[#8A185B] text-white shadow-md font-extrabold border-b-2 border-[#E86C1D]'
+                  : 'bg-white text-slate-700 hover:bg-orange-50/60 hover:text-[#8A185B] border border-gray-200 shadow-2xs font-semibold'
+              }`}
+            >
+              <Sparkles className={`w-4.5 h-4.5 ${activeTab === 'kpi_individuales' ? 'text-orange-300' : 'text-[#E86C1D]'}`} />
+              <span>KPI'S individuales</span>
+              <span
+                className={`hidden sm:inline-flex items-center text-[11px] font-black uppercase px-2 py-0.5 rounded-md ${
+                  activeTab === 'kpi_individuales'
+                    ? 'bg-[#E86C1D] text-white'
+                    : 'bg-orange-100 text-[#E86C1D]'
+                }`}
+              >
+                AI Studio
+              </span>
+            </button>
           </nav>
 
           {/* Quick Drive Status Bar Action */}
@@ -669,6 +686,11 @@ export default function App() {
           <CriteriosEvaluacionTab
             useCommaDecimals={useCommaDecimals}
           />
+        )}
+
+        {activeTab === 'kpi_individuales' && (
+          /* TAB 6: KPI'S INDIVIDUALES EMBEDDED DASHBOARD */
+          <KpiIndividualesEmbed />
         )}
       </main>
 

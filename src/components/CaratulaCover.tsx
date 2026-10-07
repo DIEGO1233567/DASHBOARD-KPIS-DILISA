@@ -23,11 +23,11 @@ const KPIS_COL1: KpiItem[] = [
 ];
 
 const KPIS_COL2: KpiItem[] = [
-  { id: 7, label: 'INTERCOMPAÑIAS', dataKey: 'INTERCOMPAÑIAS' },
+  { id: 7, label: 'INTEREMPRESAS', dataKey: 'INTEREMPRESAS' },
   { id: 8, label: 'ASOCIADOS', dataKey: 'Asociados' },
   { id: 9, label: 'CUENTAS DE MAYOR', dataKey: 'Cuentas De Mayor' },
   { id: 10, label: 'LIGADO CONT. ELECT.', dataKey: 'LIGADO CONT. ELECT.' },
-  { id: 11, label: 'CONC. ING. MERCADERIAS (DIFER. SIS)', dataKey: 'Conc. Ing. Mercaderias (Difer. Sis)' },
+  { id: 11, label: 'CONCILIACIÓN DE INGRESOS MERCADERIAS PDM-BW-CO-ECC', dataKey: 'CONCILIACIÓN DE INGRESOS MERCADERIAS PDM-BW-CO-ECC' },
 ];
 
 export const CaratulaCover: React.FC<CaratulaCoverProps> = ({

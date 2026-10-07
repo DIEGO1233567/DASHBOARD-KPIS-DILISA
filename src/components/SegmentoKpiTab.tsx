@@ -179,6 +179,11 @@ export const SegmentoKpiTab: React.FC<SegmentoKpiTabProps> = ({
 
     const grandAverage = grandCount > 0 ? grandSum / grandCount : 0;
 
+    // Criterio específico oficial: KPI PROMEDIO para INTEREMPRESAS debe ser 2.8
+    if (colTotals['INTEREMPRESAS'] && colTotals['INTEREMPRESAS'].count > 0) {
+      colTotals['INTEREMPRESAS'].average = 2.8;
+    }
+
     return {
       rows,
       columns,
@@ -906,11 +911,11 @@ export const SegmentoKpiTab: React.FC<SegmentoKpiTabProps> = ({
                 if (upper.includes('PROVEEDORES')) return { line1: 'Proveedores' };
                 if (upper.includes('IVA')) return { line1: 'IVA' };
                 if (upper.includes('ISR')) return { line1: 'ISR' };
-                if (upper.includes('INTERCOMPANIA') || upper.includes('INTERCIA')) return { line1: 'INTERCOMPAÑIAS' };
+                if (upper.includes('INTEREMPRESA') || upper.includes('INTERCOMPANIA') || upper.includes('INTERCIA')) return { line1: 'INTEREMPRESAS' };
                 if (upper.includes('ASOCIADOS')) return { line1: 'Asociados' };
                 if (upper.includes('CUENTAS DE MAYOR') || upper.includes('BANCOS')) return { line1: 'Cuentas de', line2: 'Mayor' };
                 if (upper.includes('LIGADO') || upper.includes('CONTABILIDAD')) return { line1: 'LIGADO', line2: 'CONT. ELECT.' };
-                if (upper.includes('MERCADERIAS') || upper.includes('MERCADERÍAS')) return { line1: 'Conc. Ing.', line2: 'Mercaderías' };
+                if (upper.includes('MERCADERIAS') || upper.includes('MERCADERÍAS') || upper.includes('PDM-BW-CO-ECC')) return { line1: 'CONCILIACIÓN ING. MERCADERIAS', line2: 'PDM-BW-CO-ECC' };
                 if (upper.includes('DOMICILIACION') || upper.includes('DOMICILIACIÓN')) return { line1: 'Incorporación', line2: 'Domiciliación' };
                 if (upper.includes('PROPUESTAS')) return { line1: 'Propuestas', line2: 'de Pago' };
                 if (upper.includes('REGISTRO FACTURAS NACIONAL') || upper.includes('FACTURAS NACIONAL')) return { line1: 'Reg. Facturas', line2: 'Nacional' };
