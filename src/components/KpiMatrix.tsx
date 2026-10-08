@@ -138,18 +138,35 @@ export const KpiMatrix: React.FC<KpiMatrixProps> = ({
               </th>
               {columns.map((col) => {
                 const isSelected = selectedKpi === col;
+                const isConciliacion =
+                  col.toUpperCase().includes('CONCILIACIÓN') &&
+                  (col.toUpperCase().includes('MERCADERIAS') || col.toUpperCase().includes('PDM-BW-CO-ECC'));
+                const isInventario =
+                  col.toUpperCase().includes('CTO DE VTAS') ||
+                  col.toUpperCase() === 'INVENTARIO/CTO DE VTAS' ||
+                  col.toUpperCase() === 'INVENTARIO/COSTO DE VENTAS';
+
                 return (
                   <th
                     key={col}
                     onClick={() => onSelectKpi(isSelected ? null : col)}
-                    className={`py-3.5 px-4 text-right uppercase tracking-wider text-[14px] sm:text-[16px] font-black cursor-pointer border-r border-white/25 whitespace-nowrap transition-all select-none ${
+                    className={`py-3 px-4 ${isConciliacion ? 'text-center' : 'text-right'} uppercase tracking-wider text-[14px] sm:text-[16px] font-black cursor-pointer border-r border-white/25 whitespace-nowrap transition-all select-none ${
                       isSelected
                         ? 'bg-[#E86C1D] text-white font-black ring-2 ring-white/70 shadow-inner'
                         : 'hover:bg-[#9D286F] text-white'
                     }`}
-                    title={`Filtrar por KPI: ${col}`}
+                    title={`Filtrar por KPI: ${isInventario ? 'INVENTARIO/COSTO DE VENTAS' : col}`}
                   >
-                    {col}
+                    {isConciliacion ? (
+                      <div className="inline-flex flex-col items-center justify-center leading-tight">
+                        <span>CONCILIACIÓN INGRESOS</span>
+                        <span>MERCADERIAS PDM-BW-CO-ECC</span>
+                      </div>
+                    ) : isInventario ? (
+                      'INVENTARIO/COSTO DE VENTAS'
+                    ) : (
+                      col
+                    )}
                   </th>
                 );
               })}
@@ -211,8 +228,18 @@ export const KpiMatrix: React.FC<KpiMatrixProps> = ({
                     );
                   })}
 
-                  {/* Row Total */}
-                  <td className="py-2.5 px-3 text-right font-black text-[#8A185B] bg-[#FEF9EC] border-l-2 border-[#E86C1D]/40 font-mono text-base sm:text-lg md:text-xl">
+                  {/* Row Total (GLOBAL) con semáforo de colores */}
+                  <td
+                    className={`py-2.5 px-3 text-right font-black border-l-2 border-[#E86C1D]/40 font-mono text-base sm:text-lg md:text-xl transition-all ${
+                      rowTot
+                        ? rowTot >= 3.0
+                          ? 'bg-[#E8F8F0] text-[#0B7D4B]'
+                          : rowTot >= 2.0
+                          ? 'bg-[#FEF9EC] text-[#B86200]'
+                          : 'bg-[#FDF2F4] text-[#DC2626]'
+                        : 'bg-white text-slate-300'
+                    }`}
+                  >
                     {rowTot ? formatKpiNumber(rowTot, useCommaDecimals, 1) : ''}
                   </td>
                 </tr>
@@ -228,13 +255,36 @@ export const KpiMatrix: React.FC<KpiMatrixProps> = ({
               </td>
               {columns.map((colName) => {
                 const colTot = colTotals[colName]?.average;
+                const hasVal = colTot !== undefined && colTot > 0;
+                const hoverColorClass = hasVal
+                  ? colTot >= 3.0
+                    ? 'hover:bg-[#E8F8F0] hover:text-[#0B7D4B]'
+                    : colTot >= 2.0
+                    ? 'hover:bg-[#FEF9EC] hover:text-[#B86200]'
+                    : 'hover:bg-[#FDF2F4] hover:text-[#DC2626]'
+                  : '';
                 return (
-                  <td key={colName} className="py-3 px-3 text-right border-r border-white/20 font-mono text-base sm:text-lg md:text-xl font-black text-white">
-                    {colTot ? formatKpiNumber(colTot, useCommaDecimals, 1) : ''}
+                  <td
+                    key={colName}
+                    title={hasVal ? `${colName}: ${formatKpiNumber(colTot, useCommaDecimals, 1)}` : colName}
+                    className={`py-2.5 px-3 text-right border-r border-white/20 font-mono text-base sm:text-lg md:text-xl font-black bg-[#8A185B] text-white transition-all duration-200 cursor-pointer ${hoverColorClass}`}
+                  >
+                    {hasVal ? formatKpiNumber(colTot, useCommaDecimals, 1) : ''}
                   </td>
                 );
               })}
-              <td className="py-3 px-3.5 text-right font-black bg-[#8A185B] font-mono text-base sm:text-lg md:text-xl text-white border-l-2 border-[#E86C1D]">
+              <td
+                className={`py-2.5 px-3.5 text-right font-black font-mono text-base sm:text-lg md:text-xl border-l-2 border-[#E86C1D] bg-[#8A185B] text-white transition-all duration-200 cursor-pointer ${
+                  grandTotal.count > 0
+                    ? grandTotal.average >= 3.0
+                      ? 'hover:bg-[#E8F8F0] hover:text-[#0B7D4B]'
+                      : grandTotal.average >= 2.0
+                      ? 'hover:bg-[#FEF9EC] hover:text-[#B86200]'
+                      : 'hover:bg-[#FDF2F4] hover:text-[#DC2626]'
+                    : ''
+                }`}
+                title={`Gran Total Global: ${grandTotal.count > 0 ? formatKpiNumber(grandTotal.average, useCommaDecimals, 1) : '-'}`}
+              >
                 {grandTotal.count > 0 ? formatKpiNumber(grandTotal.average, useCommaDecimals, 1) : ''}
               </td>
             </tr>

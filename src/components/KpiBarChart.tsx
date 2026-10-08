@@ -87,6 +87,12 @@ export const KpiBarChart: React.FC<KpiBarChartProps> = ({
 
   const maxScale = 4.0; // KPI Scale (0.0 to 4.0)
 
+  const globalAvg = useMemo(() => {
+    if (dataList.length === 0) return 0;
+    const totalSum = dataList.reduce((acc, curr) => acc + curr.average, 0);
+    return totalSum / dataList.length;
+  }, [dataList]);
+
   return (
     <div
       id="kpi-bar-chart-container"
@@ -116,6 +122,19 @@ export const KpiBarChart: React.FC<KpiBarChartProps> = ({
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
+          {globalAvg > 0 && (
+            <div className="flex items-center gap-1.5 px-3 py-1 rounded-lg border border-gray-200 bg-gray-50 text-[13px] font-bold">
+              <span className="text-gray-600">Promedio Global:</span>
+              <span
+                className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-mono font-black text-white shadow-2xs ${
+                  globalAvg >= 3.0 ? 'bg-[#0B7D4B]' : globalAvg >= 2.0 ? 'bg-[#B86200]' : 'bg-[#DC2626]'
+                }`}
+              >
+                <span>{formatKpiNumber(globalAvg, useCommaDecimals, 1)}</span>
+              </span>
+            </div>
+          )}
+
           {/* Sort Selector Toggle */}
           <div className="flex items-center bg-gray-100 p-0.5 rounded-lg border border-gray-200 text-[13px]">
             <button
@@ -125,9 +144,9 @@ export const KpiBarChart: React.FC<KpiBarChartProps> = ({
                   ? 'bg-[#8A185B] text-white shadow-xs'
                   : 'text-gray-600 hover:text-[#8A185B]'
               }`}
-              title="Ordenar según Carátula Institucional (1 a 11)"
+              title="Ordenar según Carátula Institucional (1 a 12)"
             >
-              Carátula (1-11)
+              Carátula (1-12)
             </button>
             <button
               onClick={() => setSortMode('desc')}
@@ -215,6 +234,63 @@ export const KpiBarChart: React.FC<KpiBarChartProps> = ({
             </div>
           );
         })}
+
+        {/* Fila destacada para KPI GLOBAL con semáforo de color */}
+        {globalAvg > 0 && (() => {
+          const globalColor = getPerformanceColorMeta(globalAvg);
+          const globalPercentage = Math.min(100, Math.max(0, (globalAvg / maxScale) * 100));
+          return (
+            <div
+              className="flex items-center gap-3 p-2 rounded-xl transition-all border-t-2 border-[#8A185B]/25 bg-[#8A185B]/5 mt-1"
+              title={`KPI GLOBAL: Promedio ${formatKpiNumber(globalAvg, useCommaDecimals, 2)} (${globalColor.categoryLabel})`}
+            >
+              {/* Left Label */}
+              <div className="w-56 sm:w-72 text-right shrink-0 flex items-center justify-end gap-2">
+                <span
+                  className={`w-3.5 h-3.5 rounded-full shrink-0 shadow-xs border border-white/80 ${
+                    globalAvg >= 3.0 ? 'bg-[#0B7D4B]' : globalAvg >= 2.0 ? 'bg-[#B86200]' : 'bg-[#DC2626]'
+                  }`}
+                />
+                <span className="text-[13px] sm:text-[14px] font-black uppercase text-[#8A185B] tracking-wider">
+                  GLOBAL (PROMEDIO)
+                </span>
+                <span
+                  className={`hidden sm:inline-flex text-[11px] font-extrabold uppercase px-2 py-0.5 rounded-full shadow-2xs ${
+                    globalAvg >= 3.0
+                      ? 'bg-[#0B7D4B] text-white'
+                      : globalAvg >= 2.0
+                      ? 'bg-[#B86200] text-white'
+                      : 'bg-[#DC2626] text-white'
+                  }`}
+                >
+                  {globalAvg >= 3.0 ? 'Verde' : globalAvg >= 2.0 ? 'Amarillo' : 'Rojo'}
+                </span>
+              </div>
+
+              {/* Progress Bar Container with Desempeño Visual */}
+              <div className="flex-1 flex items-center">
+                <div className="w-full bg-gray-200/90 h-6.5 rounded-lg overflow-hidden relative shadow-inner">
+                  <div
+                    className="h-full transition-all duration-700 ease-out rounded-lg shadow-2xs"
+                    style={{
+                      width: `${globalPercentage}%`,
+                      background: globalColor.background,
+                    }}
+                  />
+                </div>
+
+                {/* Score Number on the Right with badge */}
+                <span
+                  className={`ml-3 px-2.5 py-0.5 rounded-md font-mono text-base sm:text-lg font-black min-w-[48px] text-center text-white shadow-xs ${
+                    globalAvg >= 3.0 ? 'bg-[#0B7D4B]' : globalAvg >= 2.0 ? 'bg-[#B86200]' : 'bg-[#DC2626]'
+                  }`}
+                >
+                  {formatKpiNumber(globalAvg, useCommaDecimals, 1)}
+                </span>
+              </div>
+            </div>
+          );
+        })()}
 
         {/* X Axis Ticks */}
         <div className="flex items-center gap-3 pt-2 mt-2 border-t border-gray-100">

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Sparkles, LayoutDashboard } from 'lucide-react';
+import { ArrowRight, Sparkles, LayoutDashboard, ChevronRight, ExternalLink, Settings, Trash2 } from 'lucide-react';
 
 interface CaratulaCoverProps {
   onGoToDashboard: () => void;
@@ -11,23 +11,25 @@ interface KpiItem {
   id: number;
   label: string;
   dataKey: string;
+  hasExternalLink?: boolean;
 }
 
 const KPIS_COL1: KpiItem[] = [
   { id: 1, label: 'CARTERA DE CREDITO', dataKey: 'Cartera de Credito' },
-  { id: 2, label: 'INVENTARIO/CTO DE VTAS', dataKey: 'Inventario/Cto de vtas' },
-  { id: 3, label: 'PAGOS ANTICIPADOS', dataKey: 'Pagos Anticipados' },
-  { id: 4, label: 'PROVEEDORES', dataKey: 'Proveedores' },
-  { id: 5, label: 'IVA', dataKey: 'IVA' },
-  { id: 6, label: 'ISR', dataKey: 'ISR' },
+  { id: 2, label: 'INVENTARIO/COSTO DE VENTAS', dataKey: 'Inventario/Costo de ventas' },
+  { id: 3, label: 'PROVEEDORES', dataKey: 'Proveedores' },
+  { id: 4, label: 'IVA', dataKey: 'IVA' },
+  { id: 5, label: 'ISR', dataKey: 'ISR' },
+  { id: 6, label: 'IMSS, SAR E INFONAVIT', dataKey: 'IMSS, SAR E INFONAVIT' },
 ];
 
 const KPIS_COL2: KpiItem[] = [
-  { id: 7, label: 'INTEREMPRESAS', dataKey: 'INTEREMPRESAS' },
-  { id: 8, label: 'ASOCIADOS', dataKey: 'Asociados' },
-  { id: 9, label: 'CUENTAS DE MAYOR', dataKey: 'Cuentas De Mayor' },
-  { id: 10, label: 'LIGADO CONT. ELECT.', dataKey: 'LIGADO CONT. ELECT.' },
-  { id: 11, label: 'CONCILIACIÓN DE INGRESOS MERCADERIAS PDM-BW-CO-ECC', dataKey: 'CONCILIACIÓN DE INGRESOS MERCADERIAS PDM-BW-CO-ECC' },
+  { id: 7, label: 'PAGOS ANTICIPADOS', dataKey: 'Pagos Anticipados', hasExternalLink: true },
+  { id: 8, label: 'INTEREMPRESAS', dataKey: 'INTEREMPRESAS', hasExternalLink: true },
+  { id: 9, label: 'ASOCIADOS', dataKey: 'Asociados', hasExternalLink: true },
+  { id: 10, label: 'CUENTAS DE MAYOR', dataKey: 'Cuentas De Mayor', hasExternalLink: true },
+  { id: 11, label: 'LIGADO CONTABILIDAD ELECTRÓNICA', dataKey: 'LIGADO CONT. ELECT.' },
+  { id: 12, label: 'CONCILIACIÓN DE INGRESOS MERCADERIAS PDM-BW-CO-ECC', dataKey: 'CONCILIACIÓN DE INGRESOS MERCADERIAS PDM-BW-CO-ECC' },
 ];
 
 export const CaratulaCover: React.FC<CaratulaCoverProps> = ({
@@ -147,15 +149,15 @@ export const CaratulaCover: React.FC<CaratulaCoverProps> = ({
             <div className="relative z-10 my-auto pl-4 sm:pl-8 lg:pl-10 pr-2 py-4">
               <div className="flex items-center justify-between border-b-2 border-white/25 pb-3 mb-6">
                 <span
-                  className="text-[20px] sm:text-[24px] lg:text-[28px] font-bold tracking-wider uppercase text-[#FFB347] drop-shadow-sm"
+                  className="text-[20px] sm:text-[24px] lg:text-[28px] font-bold tracking-wider uppercase text-white drop-shadow-sm"
                   style={{ fontFamily: "'Cinzel', 'Playfair Display', Georgia, serif" }}
                 >
                   RUBROS EVALUADOS (KPIS)
                 </span>
               </div>
 
-              {/* 2-Column Vertical Flow List of KPIs matching Institutional Cover */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3.5">
+              {/* 2-Column Vertical Flow List of KPIs matching Institutional Cover & Image */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
                 {/* Columna Izquierda: 1 a 6 */}
                 <div className="flex flex-col gap-2.5">
                   {KPIS_COL1.map((item) => (
@@ -165,23 +167,37 @@ export const CaratulaCover: React.FC<CaratulaCoverProps> = ({
                         if (onSelectKpi) onSelectKpi(item.dataKey);
                         else onGoToDashboard();
                       }}
-                      className="flex items-center gap-3 text-white py-0.5 px-1.5 rounded-xl hover:bg-white/20 transition-all cursor-pointer group"
+                      className="flex items-center justify-between px-3 py-2.5 sm:py-3 rounded-2xl bg-[#6E1446] hover:bg-[#861956] border border-white/15 shadow-sm transition-all duration-150 cursor-pointer group hover:scale-[1.01]"
                       title={`Ir a ${item.label} en Resumen Ejecutivo`}
                     >
-                      <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-gradient-to-br from-[#FF1A8B] to-[#E1007A] text-white font-mono text-xs sm:text-sm font-black flex items-center justify-center shrink-0 shadow-md border border-white/40 group-hover:scale-110 transition-transform">
-                        {item.id}
-                      </span>
-                      <span
-                        className="text-[15px] sm:text-[18px] lg:text-[20px] font-semibold text-white tracking-wide uppercase leading-tight drop-shadow-md group-hover:text-[#FFB347] transition-colors"
-                        style={{ fontFamily: "'Cinzel', 'Playfair Display', 'Times New Roman', Georgia, serif" }}
-                      >
-                        {item.label}
-                      </span>
+                      <div className="flex items-center gap-3 min-w-0 pr-2">
+                        <span className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white text-[#6E1446] font-extrabold text-[15px] sm:text-[17px] flex items-center justify-center shrink-0 shadow-sm font-serif">
+                          {item.id}
+                        </span>
+                        <span
+                          className="text-[13px] sm:text-[15px] lg:text-[16px] font-bold text-white tracking-wide uppercase leading-tight group-hover:text-amber-200 transition-colors"
+                          style={{ fontFamily: "'Cinzel', 'Playfair Display', 'Times New Roman', Georgia, serif" }}
+                        >
+                          {item.label}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        {item.hasExternalLink ? (
+                          <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/20 flex items-center justify-center text-white/90 group-hover:bg-white group-hover:text-[#6E1446] transition-all shadow-xs">
+                            <ExternalLink className="w-4 h-4" />
+                          </span>
+                        ) : (
+                          <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/20 flex items-center justify-center text-white/90 group-hover:bg-white group-hover:text-[#6E1446] transition-all shadow-xs">
+                            <ChevronRight className="w-4.5 h-4.5" />
+                          </span>
+                        )}
+                      </div>
                     </div>
                   ))}
                 </div>
 
-                {/* Columna Derecha: 7 a 11 */}
+                {/* Columna Derecha: 7 a 12 */}
                 <div className="flex flex-col gap-2.5">
                   {KPIS_COL2.map((item) => (
                     <div
@@ -190,18 +206,32 @@ export const CaratulaCover: React.FC<CaratulaCoverProps> = ({
                         if (onSelectKpi) onSelectKpi(item.dataKey);
                         else onGoToDashboard();
                       }}
-                      className="flex items-center gap-3 text-white py-0.5 px-1.5 rounded-xl hover:bg-white/20 transition-all cursor-pointer group"
+                      className="flex items-center justify-between px-3 py-2.5 sm:py-3 rounded-2xl bg-[#6E1446] hover:bg-[#861956] border border-white/15 shadow-sm transition-all duration-150 cursor-pointer group hover:scale-[1.01]"
                       title={`Ir a ${item.label} en Resumen Ejecutivo`}
                     >
-                      <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-gradient-to-br from-[#FF1A8B] to-[#E1007A] text-white font-mono text-xs sm:text-sm font-black flex items-center justify-center shrink-0 shadow-md border border-white/40 group-hover:scale-110 transition-transform">
-                        {item.id}
-                      </span>
-                      <span
-                        className="text-[15px] sm:text-[18px] lg:text-[20px] font-semibold text-white tracking-wide uppercase leading-tight drop-shadow-md group-hover:text-[#FFB347] transition-colors"
-                        style={{ fontFamily: "'Cinzel', 'Playfair Display', 'Times New Roman', Georgia, serif" }}
-                      >
-                        {item.label}
-                      </span>
+                      <div className="flex items-center gap-3 min-w-0 pr-2">
+                        <span className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white text-[#6E1446] font-extrabold text-[15px] sm:text-[17px] flex items-center justify-center shrink-0 shadow-sm font-serif">
+                          {item.id}
+                        </span>
+                        <span
+                          className="text-[13px] sm:text-[15px] lg:text-[16px] font-bold text-white tracking-wide uppercase leading-tight group-hover:text-amber-200 transition-colors"
+                          style={{ fontFamily: "'Cinzel', 'Playfair Display', 'Times New Roman', Georgia, serif" }}
+                        >
+                          {item.label}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        {item.hasExternalLink ? (
+                          <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/20 flex items-center justify-center text-white/90 group-hover:bg-white group-hover:text-[#6E1446] transition-all shadow-xs">
+                            <ExternalLink className="w-4 h-4" />
+                          </span>
+                        ) : (
+                          <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/20 flex items-center justify-center text-white/90 group-hover:bg-white group-hover:text-[#6E1446] transition-all shadow-xs">
+                            <ChevronRight className="w-4.5 h-4.5" />
+                          </span>
+                        )}
+                      </div>
                     </div>
                   ))}
                 </div>

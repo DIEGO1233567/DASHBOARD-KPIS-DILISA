@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 295" width="880" height="295" style="background:#ffffff; font-family: 'Calibri', 'Segoe UI', Arial, sans-serif;">
+  <!-- Outer table border with Liverpool plum/purple tone -->
+  <rect x="1" y="1" width="878" height="293" fill="#ffffff" stroke="#701A5B" stroke-width="1.5" />
+
+  <!-- Header background (Liverpool Plum / Magenta #701A5B) -->
+  <rect x="1" y="1" width="878" height="37" fill="#701A5B" />
+
+  <!-- Border below header -->
+  <line x1="1" y1="38" x2="879" y2="38" stroke="#701A5B" stroke-width="1.2" />
+
+  <!-- Vertical white dividers in header -->
+  <line x1="295" y1="1" x2="295" y2="38" stroke="#ffffff" stroke-width="1.2" />
+  <line x1="480" y1="1" x2="480" y2="38" stroke="#ffffff" stroke-width="1.2" />
+
+  <!-- Column headers -->
+  <text x="20" y="25" font-size="16" font-weight="bold" fill="#ffffff">Descripción</text>
+  <text x="388" y="25" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="middle">Monto</text>
+  <text x="680" y="25" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="middle">KPI</text>
+
+  <!-- Row 1: Partidas en conciliación -->
+  <text x="20" y="60" font-size="15" font-weight="bold" fill="#701A5B">Partidas en conciliación</text>
+
+  <!-- Row 2: Acumulado a diciembre 2025 -->
+  <text x="20" y="93" font-size="15" font-weight="bold" fill="#701A5B">Acumulado a diciembre 2025</text>
+  <text x="388" y="93" font-size="15.5" font-weight="bold" fill="#000000" text-anchor="middle">143,265,866</text>
+  <line x1="305" y1="99" x2="470" y2="99" stroke="#000000" stroke-width="1.2" />
+  <line x1="305" y1="102" x2="470" y2="102" stroke="#000000" stroke-width="1.2" />
+
+  <!-- Row 3: Umbral + 5% (Red) -->
+  <text x="20" y="125" font-size="15" font-weight="bold" fill="#701A5B">Umbral</text>
+  <text x="388" y="125" font-size="15.5" font-weight="bold" fill="#C00000" text-anchor="middle">5%</text>
+
+  <!-- Row 4: Umbral Definido 2026 + 150,429,159 -->
+  <text x="20" y="158" font-size="15" font-weight="bold" fill="#701A5B">Umbral Definido 2026</text>
+  <text x="388" y="158" font-size="15.5" font-weight="bold" fill="#000000" text-anchor="middle">150,429,159</text>
+  <line x1="305" y1="164" x2="470" y2="164" stroke="#000000" stroke-width="1.2" />
+  <line x1="305" y1="167" x2="470" y2="167" stroke="#000000" stroke-width="1.2" />
+
+  <!-- Green Upward Block Arrow with black border -->
+  <polygon points="496,138 486,149 491,149 491,162 501,162 501,149 506,149" fill="#2E7D32" stroke="#000000" stroke-width="1" />
+
+  <!-- Pastel Green Status Box with black border -->
+  <rect x="515" y="137" width="225" height="30" fill="#E2EFDA" stroke="#000000" stroke-width="1" />
+  <text x="627.5" y="157" font-size="14" font-weight="bold" fill="#000000" text-anchor="middle">Menor o igual al Umbral</text>
+
+  <!-- Calificación 2.5 Pill (light sage green) with black border -->
+  <rect x="754" y="130" width="112" height="44" rx="14" fill="#C6E0B4" stroke="#000000" stroke-width="1" />
+  <text x="810" y="146" font-size="10" font-weight="bold" fill="#000000" text-anchor="middle" letter-spacing="0.5">CALIFICACIÓN</text>
+  <text x="810" y="165" font-size="15.5" font-weight="bold" fill="#000000" text-anchor="middle">2.5</text>
+
+  <!-- Row 5: De 150,429,159 a 157,592,453 -->
+  <text x="388" y="196" font-size="14.5" font-weight="bold" fill="#000000" text-anchor="middle">De 150,429,159</text>
+  <text x="388" y="214" font-size="14.5" font-weight="bold" fill="#000000" text-anchor="middle">a 157,592,453</text>
+  <line x1="305" y1="220" x2="470" y2="220" stroke="#000000" stroke-width="1.2" />
+  <line x1="305" y1="223" x2="470" y2="223" stroke="#000000" stroke-width="1.2" />
+
+  <!-- Pastel Yellow Status Box with black border (NO arrow) -->
+  <rect x="515" y="180" width="225" height="40" fill="#FFF2CC" stroke="#000000" stroke-width="1" />
+  <text x="627.5" y="205" font-size="14.5" font-weight="bold" fill="#000000" text-anchor="middle">Umbral Intermedio</text>
+
+  <!-- Calificación 1.5 Pill (light pastel peach) with black border -->
+  <rect x="754" y="178" width="112" height="44" rx="14" fill="#FCE5CD" stroke="#000000" stroke-width="1" />
+  <text x="810" y="194" font-size="10" font-weight="bold" fill="#000000" text-anchor="middle" letter-spacing="0.5">CALIFICACIÓN</text>
+  <text x="810" y="213" font-size="15.5" font-weight="bold" fill="#000000" text-anchor="middle">1.5</text>
+
+  <!-- Row 6: 10% (Red) -->
+  <text x="388" y="244" font-size="15.5" font-weight="bold" fill="#C00000" text-anchor="middle">10%</text>
+
+  <!-- Row 7: 157,592,453 -->
+  <text x="388" y="271" font-size="15.5" font-weight="bold" fill="#000000" text-anchor="middle">157,592,453</text>
+  <line x1="305" y1="277" x2="470" y2="277" stroke="#000000" stroke-width="1.2" />
+  <line x1="305" y1="280" x2="470" y2="280" stroke="#000000" stroke-width="1.2" />
+
+  <!-- Red Downward Block Arrow with black border -->
+  <polygon points="491,248 501,248 501,261 506,261 496,271 486,261 491,261" fill="#C00000" stroke="#000000" stroke-width="1" />
+
+  <!-- Pastel Red Status Box with black border -->
+  <rect x="515" y="246" width="225" height="30" fill="#FCE4D6" stroke="#000000" stroke-width="1" />
+  <text x="627.5" y="266" font-size="14" font-weight="bold" fill="#000000" text-anchor="middle">Umbral excedido</text>
+
+  <!-- Calificación 1.0 Pill (light pastel red) with black border -->
+  <rect x="754" y="239" width="112" height="44" rx="14" fill="#F4CCCC" stroke="#000000" stroke-width="1" />
+  <text x="810" y="255" font-size="10" font-weight="bold" fill="#000000" text-anchor="middle" letter-spacing="0.5">CALIFICACIÓN</text>
+  <text x="810" y="274" font-size="15.5" font-weight="bold" fill="#000000" text-anchor="middle">1.0</text>
+</svg>

@@ -77,6 +77,9 @@ export async function loadRecordsFromStorage(): Promise<{
           const sanitizedRecords = request.result.records.map((r: KpiRecord, idx: number) => {
             const normalized = normalizeKpiName(r.kpi);
             let updated = normalized !== r.kpi ? { ...r, kpi: normalized } : r;
+            if (updated.areaResponsable === 'Contraloría Corporativa') {
+              updated = { ...updated, areaResponsable: 'Contraloría Dilisa' };
+            }
             if (updated.kpi === 'INTEREMPRESAS') {
               // Ensure old cached records conform to the official 2.8 average criterion
               if (updated.kpiFinal !== 2.0 && updated.kpiFinal !== 3.0 && updated.kpiFinal !== 3.5) {

@@ -86,7 +86,7 @@ export function normalizeKpiName(kpi: string): string {
     return 'Cartera de Credito';
   }
   if (upper.includes('INVENTARIO') || upper.includes('CTO DE VTAS') || upper.includes('COSTO DE VENTA')) {
-    return 'Inventario/Cto de vtas';
+    return 'Inventario/Costo de ventas';
   }
   if (upper.includes('PAGOS ANTICIPADOS') || upper.includes('PAGO ANTICIPADO')) {
     return 'Pagos Anticipados';
@@ -99,6 +99,9 @@ export function normalizeKpiName(kpi: string): string {
   }
   if (upper === 'ISR' || upper.startsWith('ISR')) {
     return 'ISR';
+  }
+  if (upper === 'IMSS' || upper.startsWith('IMSS') || upper.includes('INFONAVIT') || upper.includes('SAR')) {
+    return 'IMSS, SAR E INFONAVIT';
   }
   if (upper.includes('INTEREMPRESA') || upper.includes('INTERCIA') || upper.includes('INTERCOMPANIA')) {
     return 'INTEREMPRESAS';
@@ -464,6 +467,9 @@ export async function parseExcelBuffer(
     } else {
       area = cleanText(getValue('areaResponsable')) || 'SIN ÁREA';
     }
+    if (area === 'Contraloría Corporativa' || area.toUpperCase() === 'CONTRALORÍA CORPORATIVA' || area.toUpperCase() === 'CONTRALORIA CORPORATIVA') {
+      area = 'Contraloría Dilisa';
+    }
 
     // Extract KPI (Columns of matrix)
     let kpi = '';
@@ -578,7 +584,7 @@ export function downloadTemplateWorkbook(sampleRecords?: KpiRecord[]) {
       'CONTRALOR': 'Gerardo García',
       'SEGMENTO COMERCIAL': 'Tenedora',
       'ÁREA RESPONSABLE': 'Contraloría Boutiques',
-      'KPI': 'Inventario/Cto de vtas',
+      'KPI': 'Inventario/Costo de ventas',
       'KPI FINAL': 2.80,
       'META': 3.0,
       'COMENTARIOS': 'Registro primer trimestre 2026',
@@ -589,11 +595,23 @@ export function downloadTemplateWorkbook(sampleRecords?: KpiRecord[]) {
       'CONCATENADO': '1000 - DISTRIBUIDORA LIVERPOOL, S.A. DE C.V.',
       'CONTRALOR': 'Gerardo García',
       'SEGMENTO COMERCIAL': 'Comercializadora',
-      'ÁREA RESPONSABLE': 'Contraloría Corporativa',
+      'ÁREA RESPONSABLE': 'Contraloría Dilisa',
       'KPI': 'INTEREMPRESAS',
       'KPI FINAL': 2.80,
       'META': 3.0,
       'COMENTARIOS': 'Conciliación interempresas completada',
+    },
+    {
+      'AÑO': 2026,
+      'PERIODO': 'Q1',
+      'CONCATENADO': '1000 - DISTRIBUIDORA LIVERPOOL, S.A. DE C.V.',
+      'CONTRALOR': 'Gerardo García',
+      'SEGMENTO COMERCIAL': 'Comercializadora',
+      'ÁREA RESPONSABLE': 'Contraloría Dilisa',
+      'KPI': 'IMSS, SAR E INFONAVIT',
+      'KPI FINAL': 3.20,
+      'META': 3.0,
+      'COMENTARIOS': 'Conciliación cuotas IMSS, SAR e INFONAVIT Q1',
     },
     {
       'AÑO': 2026,

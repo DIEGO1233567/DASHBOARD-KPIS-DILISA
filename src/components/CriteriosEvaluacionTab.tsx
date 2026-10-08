@@ -8,9 +8,12 @@ import {
   ShieldCheck,
   FileSpreadsheet,
   Download,
-  BookOpen
+  BookOpen,
+  Info,
+  Sparkles
 } from 'lucide-react';
 import { formatKpiNumber } from '../utils/excelParser';
+import { CarteraCreditoUmbralesGraphic } from './CarteraCreditoUmbralesGraphic';
 
 interface EvaluationScale {
   description: string;
@@ -69,6 +72,18 @@ const KPI_CRITERIA_DATA: KpiCriteria[] = [
     ],
   },
   {
+    id: 'imss',
+    name: 'IMSS, SAR E INFONAVIT',
+    category: 'Impuestos y Cumplimiento',
+    maxScore: 3.5,
+    objective: 'Valora la conciliación de diferencias y la implementación de controles establecidos para las cuotas obrero-patronales del IMSS, SAR e INFONAVIT.',
+    scales: [
+      { description: 'Conciliado sin diferencias (Diferencia < $1,000 )', score: 3.5, level: 'excelente' },
+      { description: 'Conciliado con diferencias (Diferencias conciliadas < $50,000)', score: 3.0, level: 'bueno' },
+      { description: 'Diferencias no identificadas (Diferencias > $50,000)', score: 2.5, level: 'critico' },
+    ],
+  },
+  {
     id: 'intercias',
     name: 'INTEREMPRESAS',
     category: 'Operaciones Interempresas',
@@ -121,11 +136,23 @@ const KPI_CRITERIA_DATA: KpiCriteria[] = [
     name: 'CARTERA DE CRÉDITO',
     category: 'Crédito y Cartera',
     maxScore: 2.5,
-    objective: 'Supervisa la variación mensual de la cartera de crédito y el control sobre incrementos o acumulaciones excedentes.',
+    objective: 'Supervisa la variación acumulada de la cartera de crédito y el control sobre incrementos o acumulaciones excedentes.',
     scales: [
-      { description: 'Variación mensual dentro del rango.', score: 2.5, level: 'bueno' },
-      { description: 'Variación superior al 5%, sujeta a análisis.', score: 1.5, level: 'regular' },
-      { description: 'Incrementos recurrentes o acumulaciones que excedan.', score: 1.0, level: 'critico' },
+      {
+        description: 'Variación acumulada dentro del umbral de ±5%. (Umbral determinado de partidas en conciliación de diciembre 2025)',
+        score: 2.5,
+        level: 'excelente',
+      },
+      {
+        description: 'Variación superior al 5%, sujeta a análisis operativo y validación de causas. (Umbral determinado de partidas en conciliación de diciembre 2025)',
+        score: 1.5,
+        level: 'regular',
+      },
+      {
+        description: 'Incrementos recurrentes o acumulaciones que excedan al 10% y no correspondan al comportamiento normal del ciclo de corte. (Umbral determinado de partidas en conciliación de diciembre 2025)',
+        score: 1.0,
+        level: 'critico',
+      },
     ],
   },
   {
@@ -325,26 +352,43 @@ export const CriteriosEvaluacionTab: React.FC<CriteriosEvaluacionTabProps> = ({ 
     );
   });
 
-  const renderBadge = (score: number) => {
+  const getSemaforoDetails = (score: number, level?: EvaluationScale['level']) => {
+    if (level === 'excelente' || (!level && score >= 3.0)) {
+      return {
+        label: 'Verde',
+        dotClass: 'bg-[#0B7D4B]',
+        badgeClass: 'bg-[#E8F8F0] text-[#0B7D4B] border-[#0B7D4B]/30 hover:border-[#0B7D4B]/60',
+      };
+    }
+    if (level === 'bueno' || level === 'regular' || (!level && score >= 2.0)) {
+      return {
+        label: 'Amarillo',
+        dotClass: 'bg-[#B86200]',
+        badgeClass: 'bg-[#FEF9EC] text-[#B86200] border-[#B86200]/30 hover:border-[#B86200]/60',
+      };
+    }
+    return {
+      label: 'Rojo',
+      dotClass: 'bg-[#DC2626]',
+      badgeClass: 'bg-[#FDF2F4] text-[#DC2626] border-[#DC2626]/30 hover:border-[#DC2626]/60',
+    };
+  };
+
+  const renderBadge = (score: number, level?: EvaluationScale['level']) => {
     const scoreFormatted = formatKpiNumber(score, useCommaDecimals, 1);
-    if (score >= 3.0) {
-      return (
-        <span className="inline-flex items-center justify-center min-w-[84px] px-4 py-1.5 rounded-full text-[17px] sm:text-[18px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300 shadow-2xs font-mono">
-          {scoreFormatted}
-        </span>
-      );
-    }
-    if (score >= 2.0) {
-      return (
-        <span className="inline-flex items-center justify-center min-w-[84px] px-4 py-1.5 rounded-full text-[17px] sm:text-[18px] font-black bg-amber-100 text-amber-900 border border-amber-300 shadow-2xs font-mono">
-          {scoreFormatted}
-        </span>
-      );
-    }
+    const semaforo = getSemaforoDetails(score, level);
+
     return (
-      <span className="inline-flex items-center justify-center min-w-[84px] px-4 py-1.5 rounded-full text-[17px] sm:text-[18px] font-black bg-rose-100 text-rose-800 border border-rose-300 shadow-2xs font-mono">
-        {scoreFormatted}
-      </span>
+      <div className="flex flex-col items-center justify-center gap-1">
+        <span
+          className={`inline-flex items-center justify-center min-w-[96px] px-3.5 py-1.5 rounded-full text-[17px] sm:text-[18px] font-black border shadow-2xs font-mono transition-all ${semaforo.badgeClass}`}
+        >
+          <span>{scoreFormatted}</span>
+        </span>
+        <span className="text-[11px] font-extrabold uppercase tracking-wider text-gray-500">
+          {semaforo.label}
+        </span>
+      </div>
     );
   };
 
@@ -365,6 +409,28 @@ export const CriteriosEvaluacionTab: React.FC<CriteriosEvaluacionTabProps> = ({ 
 
         <div className="text-[16px] sm:text-[17px] text-gray-600 font-medium">
           Mostrando <strong className="text-slate-800 font-bold">{filteredCriteria.length}</strong> de {KPI_CRITERIA_DATA.length} KPI's evaluados
+        </div>
+      </div>
+
+      {/* Leyenda Semáforo de Desempeño Asignado */}
+      <div className="bg-white rounded-xl shadow-xs border border-gray-200 p-3.5 flex flex-wrap items-center justify-between gap-3 text-[14px]">
+        <div className="flex items-center gap-2 font-bold text-gray-700">
+          <Sparkles className="w-4 h-4 text-[#8F2366]" />
+          <span>Semáforo de Desempeño Asignado:</span>
+        </div>
+        <div className="flex flex-wrap items-center gap-2.5 sm:gap-4 font-bold text-[13px] sm:text-[14px]">
+          <span className="flex items-center gap-1.5 text-[#0B7D4B] bg-[#E8F8F0] px-3 py-1 rounded-full border border-[#0B7D4B]/30 shadow-2xs">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#0B7D4B] shadow-2xs" />
+            <span>Verde (3.0 al 3.5 / Excelente)</span>
+          </span>
+          <span className="flex items-center gap-1.5 text-[#B86200] bg-[#FEF9EC] px-3 py-1 rounded-full border border-[#B86200]/30 shadow-2xs">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#B86200] shadow-2xs" />
+            <span>Amarillo (2.0 a 2.99 / Bueno - Regular)</span>
+          </span>
+          <span className="flex items-center gap-1.5 text-[#DC2626] bg-[#FDF2F4] px-3 py-1 rounded-full border border-[#DC2626]/30 shadow-2xs">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#DC2626] shadow-2xs" />
+            <span>Rojo (1.0 a 1.99 / Crítico)</span>
+          </span>
         </div>
       </div>
 
@@ -389,66 +455,90 @@ export const CriteriosEvaluacionTab: React.FC<CriteriosEvaluacionTabProps> = ({ 
           </span>
         </div>
 
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto max-h-[680px] overflow-y-auto relative">
           <table className="w-full text-left text-[17px] sm:text-[18px] border-collapse">
-            <thead>
+            <thead className="sticky top-0 z-20 bg-[#8F2366] text-white shadow-md">
               <tr className="bg-[#8F2366] text-white border-b-2 border-[#FF6E52] uppercase text-[16px] tracking-wider">
                 <th
-                  className="py-4 px-4 w-64 border-r border-white/10 font-bold text-white"
+                  className="py-4 px-3 w-16 text-center border-r border-white/10 font-bold text-white text-[16px] bg-[#8F2366] sticky top-0"
+                  style={{ fontFamily: "'Playfair Display', 'Cinzel', Georgia, serif" }}
+                >
+                  No.
+                </th>
+                <th
+                  className="py-4 px-4 w-64 border-r border-white/10 font-bold text-white bg-[#8F2366] sticky top-0"
                   style={{ fontFamily: "'Playfair Display', 'Cinzel', Georgia, serif" }}
                 >
                   KPI / Módulo
                 </th>
                 <th
-                  className="py-4 px-4 w-96 border-r border-white/10 font-bold text-white"
+                  className="py-4 px-4 w-96 border-r border-white/10 font-bold text-white bg-[#8F2366] sticky top-0"
                   style={{ fontFamily: "'Playfair Display', 'Cinzel', Georgia, serif" }}
                 >
                   Objetivo de Control
                 </th>
                 <th
-                  className="py-4 px-4 border-r border-white/10 font-bold text-white"
+                  className="py-4 px-4 border-r border-white/10 font-bold text-white bg-[#8F2366] sticky top-0"
                   style={{ fontFamily: "'Playfair Display', 'Cinzel', Georgia, serif" }}
                 >
                   Descripción / Clasificación
                 </th>
                 <th
-                  className="py-4 px-4 text-center w-40 font-bold text-white"
+                  className="py-4 px-4 text-center w-48 font-bold text-white bg-[#8F2366] sticky top-0"
                   style={{ fontFamily: "'Playfair Display', 'Cinzel', Georgia, serif" }}
                 >
-                  Calificación
+                  Calificación / Semáforo
                 </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {filteredCriteria.map((kpi) => (
-                <React.Fragment key={kpi.id}>
-                  {kpi.scales.map((scale, sIdx) => {
-                    const isFirst = sIdx === 0;
+              {filteredCriteria.map((kpi) => {
+                const kpiNumber = KPI_CRITERIA_DATA.findIndex((item) => item.id === kpi.id) + 1;
 
-                    return (
-                      <tr
-                        key={`${kpi.id}-${sIdx}`}
-                        className="hover:bg-purple-50/30 transition-colors"
-                      >
-                        {isFirst && (
-                          <td
-                            rowSpan={kpi.scales.length}
-                            className="py-4 px-4 align-top font-bold text-slate-900 border-r border-gray-200 bg-gray-50/60"
-                          >
-                            <span
-                              className="block uppercase text-[18px] sm:text-[19px] text-[#502446] font-extrabold"
-                              style={{ fontFamily: "'Cinzel', 'Playfair Display', Georgia, serif" }}
+                return (
+                  <React.Fragment key={kpi.id}>
+                    {kpi.scales.map((scale, sIdx) => {
+                      const isFirst = sIdx === 0;
+
+                      return (
+                        <tr
+                          key={`${kpi.id}-${sIdx}`}
+                          className="hover:bg-purple-50/30 transition-colors"
+                        >
+                          {/* Columna previa: Número de KPI */}
+                          {isFirst && (
+                            <td
+                              rowSpan={kpi.scales.length}
+                              className="py-4 px-3 text-center align-top font-bold text-slate-900 border-r border-gray-200 bg-gray-50/70"
                             >
-                              {kpi.name}
-                            </span>
-                            <span className="text-[15px] text-gray-500 font-semibold block mt-1">
-                              {kpi.category}
-                            </span>
-                            <span className="inline-block mt-2.5 font-mono text-[15px] font-bold text-[#854E8D] bg-purple-100/70 px-3 py-1 rounded border border-purple-200">
-                              Máx: {formatKpiNumber(kpi.maxScore, useCommaDecimals, 1)} pts
-                            </span>
-                          </td>
-                        )}
+                              <span
+                                className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-[#8A185B] text-white font-black text-[15px] shadow-xs font-mono"
+                                title={`KPI #${kpiNumber}`}
+                              >
+                                {kpiNumber}
+                              </span>
+                            </td>
+                          )}
+
+                          {isFirst && (
+                            <td
+                              rowSpan={kpi.scales.length}
+                              className="py-4 px-4 align-top font-bold text-slate-900 border-r border-gray-200 bg-gray-50/60"
+                            >
+                              <span
+                                className="block uppercase text-[18px] sm:text-[19px] text-[#502446] font-extrabold"
+                                style={{ fontFamily: "'Cinzel', 'Playfair Display', Georgia, serif" }}
+                              >
+                                {kpi.name}
+                              </span>
+                              <span className="text-[15px] text-gray-500 font-semibold block mt-1">
+                                {kpi.category}
+                              </span>
+                              <span className="inline-block mt-2.5 font-mono text-[15px] font-bold text-[#854E8D] bg-purple-100/70 px-3 py-1 rounded border border-purple-200">
+                                Máx: {formatKpiNumber(kpi.maxScore, useCommaDecimals, 1)} pts
+                              </span>
+                            </td>
+                          )}
 
                         {isFirst && (
                           <td
@@ -464,22 +554,26 @@ export const CriteriosEvaluacionTab: React.FC<CriteriosEvaluacionTabProps> = ({ 
                           </td>
                         )}
 
-                        <td className="py-3.5 px-4 text-gray-800 font-medium text-[17px] border-r border-gray-200">
+                        <td className="py-3.5 px-4 text-gray-800 font-medium text-[17px] border-r border-gray-200 align-top">
                           <div className="flex items-center gap-2.5">
-                            <span className="w-2.5 h-2.5 rounded-full bg-[#854E8D] shrink-0" />
+                            <span className={`w-2.5 h-2.5 rounded-full shrink-0 shadow-2xs ${getSemaforoDetails(scale.score, scale.level).dotClass}`} />
                             <span>{scale.description}</span>
                           </div>
+                          {kpi.id === 'cartera-credito' && sIdx === kpi.scales.length - 1 && (
+                            <CarteraCreditoUmbralesGraphic />
+                          )}
                         </td>
 
-                        <td className="py-3.5 px-4 text-center">
-                          {renderBadge(scale.score)}
+                        <td className="py-3.5 px-4 text-center align-top pt-4">
+                          {renderBadge(scale.score, scale.level)}
                         </td>
                       </tr>
                     );
                   })}
                 </React.Fragment>
-              ))}
-            </tbody>
+              );
+            })}
+          </tbody>
           </table>
         </div>
       </div>

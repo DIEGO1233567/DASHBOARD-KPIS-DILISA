@@ -624,11 +624,19 @@ export const SegmentoKpiTab: React.FC<SegmentoKpiTabProps> = ({
               KPI's: <strong className="text-gray-900">{matrix.columns.length}</strong>
             </span>
             <span>•</span>
-            <span className="font-semibold">
+            <span className="font-semibold flex items-center gap-1.5">
               Promedio Global:{' '}
-              <strong className="text-[#8A185B] font-mono font-black text-base sm:text-lg">
-                {formatKpiNumber(matrix.grandAverage, useCommaDecimals, 1)}
-              </strong>
+              <span
+                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-white font-mono font-black text-xs sm:text-sm shadow-xs ${
+                  matrix.grandAverage >= 3.0
+                    ? 'bg-[#0B7D4B]'
+                    : matrix.grandAverage >= 2.0
+                    ? 'bg-[#B86200]'
+                    : 'bg-[#DC2626]'
+                }`}
+              >
+                <span>{formatKpiNumber(matrix.grandAverage, useCommaDecimals, 1)}</span>
+              </span>
             </span>
           </div>
         </div>
@@ -654,21 +662,32 @@ export const SegmentoKpiTab: React.FC<SegmentoKpiTabProps> = ({
                 {/* Horizontal columns for each KPI */}
                 {matrix.columns.map((kpi) => {
                   const isKpiSelected = selectedKpi === kpi;
+                  const isConciliacion =
+                    kpi.toUpperCase().includes('CONCILIACIÓN') &&
+                    (kpi.toUpperCase().includes('MERCADERIAS') || kpi.toUpperCase().includes('PDM-BW-CO-ECC'));
+
                   return (
                     <th
                       key={kpi}
                       onClick={() => handleSort(kpi)}
-                      className={`py-3.5 px-4 text-right uppercase tracking-wider text-[14px] sm:text-[16px] font-black cursor-pointer border-r border-white/25 whitespace-nowrap transition-all select-none ${
+                      className={`py-3 px-4 ${isConciliacion ? 'text-center' : 'text-right'} uppercase tracking-wider text-[14px] sm:text-[16px] font-black cursor-pointer border-r border-white/25 whitespace-nowrap transition-all select-none ${
                         isKpiSelected
                           ? 'bg-[#E86C1D] text-white font-black ring-2 ring-white/70 shadow-inner'
                           : 'hover:bg-[#9D286F] text-white'
                       }`}
                       title={`Ordenar o filtrar por ${kpi}`}
                     >
-                      <div className="flex items-center justify-end gap-1">
-                        <span className="truncate" title={kpi}>
-                          {kpi}
-                        </span>
+                      <div className={`flex items-center ${isConciliacion ? 'justify-center' : 'justify-end'} gap-1`}>
+                        {isConciliacion ? (
+                          <div className="inline-flex flex-col items-center justify-center leading-tight">
+                            <span>CONCILIACIÓN INGRESOS</span>
+                            <span>MERCADERIAS PDM-BW-CO-ECC</span>
+                          </div>
+                        ) : (
+                          <span className="truncate" title={kpi}>
+                            {kpi}
+                          </span>
+                        )}
                         <ArrowUpDown className="w-3.5 h-3.5 opacity-70 shrink-0 text-amber-200" />
                       </div>
                     </th>
@@ -759,15 +778,21 @@ export const SegmentoKpiTab: React.FC<SegmentoKpiTabProps> = ({
                         );
                       })}
 
-                      {/* Row Total */}
-                      <td className="py-2.5 px-3 text-right font-black text-[#8A185B] bg-[#FEF9EC] border-l-2 border-[#E86C1D]/40 font-mono text-base sm:text-lg md:text-xl">
-                        {rowTotal?.count > 0 ? (
-                          <span>
-                            {formatKpiNumber(rowTotal.average, useCommaDecimals, 1)}
-                          </span>
-                        ) : (
-                          ''
-                        )}
+                      {/* Row Total (GLOBAL) con semáforo de colores */}
+                      <td
+                        className={`py-2.5 px-3 text-right font-black border-l-2 border-[#E86C1D]/40 font-mono text-base sm:text-lg md:text-xl transition-all ${
+                          rowTotal?.count > 0
+                            ? rowTotal.average >= 3.0
+                              ? 'bg-[#E8F8F0] text-[#0B7D4B]'
+                              : rowTotal.average >= 2.0
+                              ? 'bg-[#FEF9EC] text-[#B86200]'
+                              : 'bg-[#FDF2F4] text-[#DC2626]'
+                            : 'bg-white text-slate-300'
+                        }`}
+                      >
+                        {rowTotal?.count > 0
+                          ? formatKpiNumber(rowTotal.average, useCommaDecimals, 1)
+                          : ''}
                       </td>
                     </tr>
                   );
@@ -783,20 +808,26 @@ export const SegmentoKpiTab: React.FC<SegmentoKpiTabProps> = ({
                   className="py-3 px-3.5 sticky left-0 z-30 bg-[#8A185B] border-r border-white/25 font-black uppercase text-[14px] sm:text-[16px] tracking-wider text-white"
                   style={{ fontFamily: "'Playfair Display', 'Cinzel', Georgia, serif" }}
                 >
-                  <div className="flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-amber-300" />
-                    <span>GLOBAL</span>
-                  </div>
+                  GLOBAL
                 </td>
 
                 {/* Column Totals for each KPI */}
                 {matrix.columns.map((kpi) => {
                   const colTotal = matrix.colTotals[kpi];
                   const hasData = colTotal && colTotal.count > 0;
+                  const avg = colTotal?.average || 0;
+                  const hoverColorClass = hasData
+                    ? avg >= 3.0
+                      ? 'hover:bg-[#E8F8F0] hover:text-[#0B7D4B]'
+                      : avg >= 2.0
+                      ? 'hover:bg-[#FEF9EC] hover:text-[#B86200]'
+                      : 'hover:bg-[#FDF2F4] hover:text-[#DC2626]'
+                    : '';
                   return (
                     <td
                       key={kpi}
-                      className="py-3 px-3 text-right border-r border-white/20 font-mono text-base sm:text-lg md:text-xl font-black text-white bg-[#8A185B]"
+                      title={hasData ? `${kpi}: ${formatKpiNumber(colTotal.average, useCommaDecimals, 1)}` : kpi}
+                      className={`py-2.5 px-3 text-right border-r border-white/20 font-mono text-base sm:text-lg md:text-xl font-black bg-[#8A185B] text-white transition-all duration-200 cursor-pointer ${hoverColorClass}`}
                     >
                       {hasData ? formatKpiNumber(colTotal.average, useCommaDecimals, 1) : ''}
                     </td>
@@ -804,8 +835,19 @@ export const SegmentoKpiTab: React.FC<SegmentoKpiTabProps> = ({
                 })}
 
                 {/* Grand Total */}
-                <td className="py-3 px-3.5 text-right font-black bg-[#8A185B] font-mono text-base sm:text-lg md:text-xl text-white border-l-2 border-[#E86C1D]">
-                  {formatKpiNumber(matrix.grandAverage, useCommaDecimals, 1)}
+                <td
+                  className={`py-2.5 px-3.5 text-right font-black font-mono text-base sm:text-lg md:text-xl border-l-2 border-[#E86C1D] bg-[#8A185B] text-white transition-all duration-200 cursor-pointer ${
+                    matrix.grandAverage > 0
+                      ? matrix.grandAverage >= 3.0
+                        ? 'hover:bg-[#E8F8F0] hover:text-[#0B7D4B]'
+                        : matrix.grandAverage >= 2.0
+                        ? 'hover:bg-[#FEF9EC] hover:text-[#B86200]'
+                        : 'hover:bg-[#FDF2F4] hover:text-[#DC2626]'
+                      : ''
+                  }`}
+                  title={`Gran Total Global: ${matrix.grandAverage > 0 ? formatKpiNumber(matrix.grandAverage, useCommaDecimals, 1) : '-'}`}
+                >
+                  {matrix.grandAverage > 0 ? formatKpiNumber(matrix.grandAverage, useCommaDecimals, 1) : ''}
                 </td>
               </tr>
             </tfoot>
@@ -911,11 +953,12 @@ export const SegmentoKpiTab: React.FC<SegmentoKpiTabProps> = ({
                 if (upper.includes('PROVEEDORES')) return { line1: 'Proveedores' };
                 if (upper.includes('IVA')) return { line1: 'IVA' };
                 if (upper.includes('ISR')) return { line1: 'ISR' };
+                if (upper.includes('IMSS') || upper.includes('INFONAVIT') || upper.includes('SAR')) return { line1: 'IMSS, SAR', line2: 'E INFONAVIT' };
                 if (upper.includes('INTEREMPRESA') || upper.includes('INTERCOMPANIA') || upper.includes('INTERCIA')) return { line1: 'INTEREMPRESAS' };
                 if (upper.includes('ASOCIADOS')) return { line1: 'Asociados' };
                 if (upper.includes('CUENTAS DE MAYOR') || upper.includes('BANCOS')) return { line1: 'Cuentas de', line2: 'Mayor' };
                 if (upper.includes('LIGADO') || upper.includes('CONTABILIDAD')) return { line1: 'LIGADO', line2: 'CONT. ELECT.' };
-                if (upper.includes('MERCADERIAS') || upper.includes('MERCADERÍAS') || upper.includes('PDM-BW-CO-ECC')) return { line1: 'CONCILIACIÓN ING. MERCADERIAS', line2: 'PDM-BW-CO-ECC' };
+                if (upper.includes('MERCADERIAS') || upper.includes('MERCADERÍAS') || upper.includes('PDM-BW-CO-ECC')) return { line1: 'CONCILIACIÓN INGRESOS', line2: 'MERCADERIAS PDM-BW-CO-ECC' };
                 if (upper.includes('DOMICILIACION') || upper.includes('DOMICILIACIÓN')) return { line1: 'Incorporación', line2: 'Domiciliación' };
                 if (upper.includes('PROPUESTAS')) return { line1: 'Propuestas', line2: 'de Pago' };
                 if (upper.includes('REGISTRO FACTURAS NACIONAL') || upper.includes('FACTURAS NACIONAL')) return { line1: 'Reg. Facturas', line2: 'Nacional' };

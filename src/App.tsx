@@ -561,26 +561,17 @@ export default function App() {
               <span>Criterios de Evaluación</span>
             </button>
 
-            {/* Tab 6: KPI'S individuales AI STUDIO (Incrustado nativo) */}
+            {/* Tab 6: KPI'S individuales (Inhabilitado - EN PROCESO) */}
             <button
               id="tab-kpi-individuales"
-              onClick={() => setActiveTab('kpi_individuales')}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-[14px] sm:text-[16px] transition-all cursor-pointer ${
-                activeTab === 'kpi_individuales'
-                  ? 'bg-[#8A185B] text-white shadow-md font-extrabold border-b-2 border-[#E86C1D]'
-                  : 'bg-white text-slate-700 hover:bg-orange-50/60 hover:text-[#8A185B] border border-gray-200 shadow-2xs font-semibold'
-              }`}
+              disabled
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-[14px] sm:text-[16px] bg-gray-100/90 text-gray-400 border border-gray-200/90 shadow-2xs cursor-not-allowed select-none opacity-60 transition-none"
+              title="Pestaña inhabilitada: actualmente (EN PROCESO) y sin información disponible"
             >
-              <Sparkles className={`w-4.5 h-4.5 ${activeTab === 'kpi_individuales' ? 'text-orange-300' : 'text-[#E86C1D]'}`} />
+              <Sparkles className="w-4.5 h-4.5 text-gray-400 shrink-0" />
               <span>KPI'S individuales</span>
-              <span
-                className={`hidden sm:inline-flex items-center text-[11px] font-black uppercase px-2 py-0.5 rounded-md ${
-                  activeTab === 'kpi_individuales'
-                    ? 'bg-[#E86C1D] text-white'
-                    : 'bg-orange-100 text-[#E86C1D]'
-                }`}
-              >
-                AI Studio
+              <span className="inline-flex items-center text-[11px] font-black uppercase px-2 py-0.5 rounded-md bg-gray-200 text-gray-500 border border-gray-300">
+                (EN PROCESO)
               </span>
             </button>
           </nav>

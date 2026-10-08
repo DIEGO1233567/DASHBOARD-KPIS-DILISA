@@ -122,6 +122,9 @@ export const KpiIndividualesEmbed: React.FC = () => {
               <h2 className="text-base sm:text-lg font-black text-slate-800 tracking-tight leading-tight">
                 Dashboard: KPI&apos;S individuales
               </h2>
+              <span className="px-2.5 py-0.5 rounded-md bg-[#E86C1D] text-white font-black text-[12px] uppercase tracking-wide shadow-xs animate-pulse">
+                (EN PROCESO)
+              </span>
               <span className="px-2 py-0.5 rounded-md bg-[#8A185B]/10 text-[#8A185B] font-extrabold text-[11px] uppercase tracking-wide border border-[#8A185B]/20">
                 AI Studio Incrustado
               </span>

@@ -17,7 +17,7 @@ export interface KpiDropdownItem {
   description: string;
 }
 
-// 11 official KPIs in exact order of the Carátula Institucional
+// 12 official KPIs in exact order of the Carátula Institucional
 export const CARATULA_KPIS: KpiDropdownItem[] = [
   {
     id: 1,
@@ -28,76 +28,83 @@ export const CARATULA_KPIS: KpiDropdownItem[] = [
   },
   {
     id: 2,
-    label: 'INVENTARIO/CTO DE VTAS',
-    dataKey: 'Inventario/Cto de vtas',
+    label: 'INVENTARIO/COSTO DE VENTAS',
+    dataKey: 'Inventario/Costo de ventas',
     defaultUrl: 'https://aistudio.google.com/',
     description: 'Dashboard de Inventarios y Costo de Ventas',
   },
   {
     id: 3,
-    label: 'PAGOS ANTICIPADOS',
-    dataKey: 'Pagos Anticipados',
-    defaultUrl: 'https://aistudio.google.com/',
-    description: 'Dashboard de Pagos Anticipados y Amortizaciones',
-  },
-  {
-    id: 4,
     label: 'PROVEEDORES',
     dataKey: 'Proveedores',
     defaultUrl: 'https://aistudio.google.com/',
     description: 'Dashboard de Cuentas por Pagar a Proveedores',
   },
   {
-    id: 5,
+    id: 4,
     label: 'IVA',
     dataKey: 'IVA',
     defaultUrl: 'https://aistudio.google.com/',
     description: 'Dashboard fiscal de Impuesto al Valor Agregado',
   },
   {
-    id: 6,
+    id: 5,
     label: 'ISR',
     dataKey: 'ISR',
     defaultUrl: 'https://aistudio.google.com/',
     description: 'Dashboard fiscal de Impuesto Sobre la Renta',
   },
   {
+    id: 6,
+    label: 'IMSS, SAR E INFONAVIT',
+    dataKey: 'IMSS, SAR E INFONAVIT',
+    defaultUrl: 'https://aistudio.google.com/',
+    description: 'Dashboard de Cuotas y Conciliación IMSS, SAR e INFONAVIT / Cargas Sociales',
+  },
+  {
     id: 7,
+    label: 'PAGOS ANTICIPADOS',
+    dataKey: 'Pagos Anticipados',
+    defaultUrl: 'https://aistudio.google.com/',
+    description: 'Dashboard de Pagos Anticipados y Amortizaciones',
+  },
+  {
+    id: 8,
     label: 'INTEREMPRESAS',
     dataKey: 'INTEREMPRESAS',
     defaultUrl: 'https://aistudio.google.com/',
     description: 'Dashboard de Partidas Abiertas Interempresas',
   },
   {
-    id: 8,
+    id: 9,
     label: 'ASOCIADOS',
     dataKey: 'Asociados',
     defaultUrl: 'https://aistudio.google.com/',
     description: 'Dashboard de Nómina y Cuentas de Asociados',
   },
   {
-    id: 9,
+    id: 10,
     label: 'CUENTAS DE MAYOR',
     dataKey: 'Cuentas De Mayor',
     defaultUrl: 'https://aistudio.google.com/',
     description: 'Dashboard contable de Cuentas de Mayor y Balanza',
   },
   {
-    id: 10,
-    label: 'LIGADO CONT. ELECT.',
+    id: 11,
+    label: 'LIGADO CONTABILIDAD ELECTRÓNICA',
     dataKey: 'LIGADO CONT. ELECT.',
     defaultUrl: 'https://aistudio.google.com/',
     description: 'Dashboard de Ligado con Contabilidad Electrónica SAT',
   },
   {
-    id: 11,
+    id: 12,
     label: 'CONCILIACIÓN DE INGRESOS MERCADERIAS PDM-BW-CO-ECC',
     dataKey: 'CONCILIACIÓN DE INGRESOS MERCADERIAS PDM-BW-CO-ECC',
     defaultUrl: 'https://aistudio.google.com/',
     description: 'Dashboard de Conciliación de Ingresos Mercaderías PDM-BW-CO-ECC',
   },
   {
-    id: 12,
+    id: 13,
     label: "KPI'S (OTROS)",
     dataKey: "KPI'S (OTROS)",
     defaultUrl: 'https://aistudio.google.com/',

@@ -20,8 +20,12 @@ export function filterRecords(records: KpiRecord[], filters: FilterState): KpiRe
     if (filters.selectedKpi && r.kpi !== filters.selectedKpi) {
       return false;
     }
-    if (filters.selectedArea && r.areaResponsable !== filters.selectedArea) {
-      return false;
+    if (filters.selectedArea) {
+      const targetArea = filters.selectedArea === 'Contraloría Corporativa' ? 'Contraloría Dilisa' : filters.selectedArea;
+      const recArea = r.areaResponsable === 'Contraloría Corporativa' ? 'Contraloría Dilisa' : r.areaResponsable;
+      if (recArea !== targetArea) {
+        return false;
+      }
     }
     return true;
   });
@@ -58,8 +62,10 @@ export function computeMatrixData(
   const presentCols = new Set<string>();
 
   records.forEach((r) => {
-    if (r.areaResponsable && r.areaResponsable.trim() !== '') {
-      presentRows.add(r.areaResponsable.trim());
+    let area = r.areaResponsable ? r.areaResponsable.trim() : '';
+    if (area === 'Contraloría Corporativa') area = 'Contraloría Dilisa';
+    if (area !== '') {
+      presentRows.add(area);
     }
     if (r.kpi && r.kpi.trim() !== '') {
       presentCols.add(r.kpi.trim());
@@ -110,7 +116,8 @@ export function computeMatrixData(
 
   // Populate data
   records.forEach((r) => {
-    const area = r.areaResponsable ? r.areaResponsable.trim() : '';
+    let area = r.areaResponsable ? r.areaResponsable.trim() : '';
+    if (area === 'Contraloría Corporativa') area = 'Contraloría Dilisa';
     const kpi = r.kpi ? r.kpi.trim() : '';
     const val = r.kpiFinal;
 
