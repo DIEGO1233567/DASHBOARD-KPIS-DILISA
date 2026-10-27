@@ -12,8 +12,11 @@ import {
   Info,
   Sparkles
 } from 'lucide-react';
-import { formatKpiNumber } from '../utils/excelParser';
+import { formatKpiNumber, downloadCriteriosWorkbook } from '../utils/excelParser';
 import { CarteraCreditoUmbralesGraphic } from './CarteraCreditoUmbralesGraphic';
+import { IsrClasificacionGraphic } from './IsrClasificacionGraphic';
+import { InterempresasGraphic } from './InterempresasGraphic';
+import { IvaClasificacionGraphic } from './IvaClasificacionGraphic';
 
 interface EvaluationScale {
   description: string;
@@ -37,7 +40,7 @@ const KPI_CRITERIA_DATA: KpiCriteria[] = [
     name: 'ASOCIADOS Y CTAS DE MAYOR',
     category: 'Cuentas y Partidas Abiertas',
     maxScore: 3.0,
-    objective: 'Evalúa la clasificación y depuración de partidas por antigüedad en cuentas con asociados y balance de mayor general.',
+    objective: 'Garantizar la correcta identificación, gestión y control de la antigüedad de saldos en las cuentas de asociados y cuentas de Mayor, asegurando que las compensaciones, cobros y pagos se realicen conforme a las políticas internas y evitando saldos vencidos superiores a 90 días no justificados por la operación.',
     scales: [
       { description: '1 a 90 días', score: 3.0, level: 'excelente' },
       { description: '91 a 120 días', score: 2.5, level: 'bueno' },
@@ -50,11 +53,11 @@ const KPI_CRITERIA_DATA: KpiCriteria[] = [
     name: 'IVA',
     category: 'Impuestos y Cumplimiento',
     maxScore: 3.5,
-    objective: 'Determina el control y la oportunidad en la conciliación de diferencias de Impuesto al Valor Agregado respecto al pago de impuesto.',
+    objective: 'Garantizar la simetría fiscal y contable mediante la coincidencia del 100% del IVA determinado y presentado en la declaración mensual contra los saldos de las cuentas de (IVA por pagar) o (IVA a favor) 22000011.',
     scales: [
-      { description: 'Si diferencias', score: 3.5, level: 'excelente' },
-      { description: 'Diferencias conciliadas antes del pago de Impto', score: 3.0, level: 'excelente' },
-      { description: 'Diferencias conciliadas despues del pago de Impto', score: 2.0, level: 'regular' },
+      { description: 'Sin diferencias', score: 3.5, level: 'excelente' },
+      { description: 'Diferencias conciliadas antes del pago de Impuestos', score: 3.0, level: 'excelente' },
+      { description: 'Diferencias conciliadas despues del pago de Impuestos', score: 2.0, level: 'regular' },
       { description: 'Diferencias sin conciliar', score: 1.0, level: 'critico' },
     ],
   },
@@ -63,12 +66,12 @@ const KPI_CRITERIA_DATA: KpiCriteria[] = [
     name: 'ISR',
     category: 'Impuestos y Cumplimiento',
     maxScore: 3.5,
-    objective: 'Valora la conciliación de diferencias y la implementación de controles establecidos para el Impuesto Sobre la Renta.',
+    objective: 'Garantizar la simetría fiscal y contable mediante la coincidencia del 100% del ISR determinado y presentado en la declaración mensual contra los saldos de las cuentas de (ISR por pagar) o (ISR a favor) 22000001.',
     scales: [
-      { description: 'Si diferencias y con controles establecidos', score: 3.5, level: 'excelente' },
-      { description: 'Sin diferencias', score: 3.0, level: 'excelente' },
-      { description: 'Diferencias conciliadas', score: 2.5, level: 'bueno' },
-      { description: 'Diferencias sin conciliar', score: 1.5, level: 'critico' },
+      { description: 'Sin diferencias', score: 3.5, level: 'excelente' },
+      { description: 'Diferencias conciliadas antes del pago de Impuestos', score: 3.0, level: 'excelente' },
+      { description: 'Diferencias conciliadas despues del pago de Impuestos', score: 2.0, level: 'regular' },
+      { description: 'Diferencias sin conciliar', score: 1.0, level: 'critico' },
     ],
   },
   {
@@ -76,7 +79,7 @@ const KPI_CRITERIA_DATA: KpiCriteria[] = [
     name: 'IMSS, SAR E INFONAVIT',
     category: 'Impuestos y Cumplimiento',
     maxScore: 3.5,
-    objective: 'Valora la conciliación de diferencias y la implementación de controles establecidos para las cuotas obrero-patronales del IMSS, SAR e INFONAVIT.',
+    objective: 'Garantizar el cumplimiento al 100% en tiempo y forma de las obligaciones patronales (IMSS, SAR e INFONAVIT) y la conciliación total de los registros contables Vs las declaraciones presentadas, manteniendo las variaciones globales dentro del umbral de tolerancia estricto (<0.05% del pago) para minimizar riegos de caracter fiscal y Contable.',
     scales: [
       { description: 'Conciliado sin diferencias (Diferencia < $1,000 )', score: 3.5, level: 'excelente' },
       { description: 'Conciliado con diferencias (Diferencias conciliadas < $50,000)', score: 3.0, level: 'bueno' },
@@ -88,7 +91,7 @@ const KPI_CRITERIA_DATA: KpiCriteria[] = [
     name: 'INTEREMPRESAS',
     category: 'Operaciones Interempresas',
     maxScore: 3.5,
-    objective: 'Monitorea el tiempo de permanencia y conciliación de Partidas Abiertas (PA) entre interempresas del grupo.',
+    objective: 'Garantizar la liquidez, transparencia operativa entre filiales mediante la liquidación y conciliación del 100% de las operaciones interempresas dentro del periodo corriente (≤30 días), eliminando saldos mayores a 60 días.',
     scales: [
       { description: 'PA Abiertas de 0-30 días', score: 3.5, level: 'excelente' },
       { description: 'PA Abiertas de 31-60 días', score: 3.0, level: 'excelente' },
@@ -100,7 +103,7 @@ const KPI_CRITERIA_DATA: KpiCriteria[] = [
     name: 'INVENTARIOS Y COSTO DE VENTAS',
     category: 'Inventarios y Costo de Ventas',
     maxScore: 3.5,
-    objective: 'Evalúa la conciliación de inventarios y costo de ventas en la integración de SAP/BW y límites de diferencias en partidas abiertas.',
+    objective: 'Validar la conciliación íntegral de Inventarios y Costo de Ventas entre SAP y BW, logrando la identificación, y soporte del 100% de las partidas en conciliación.',
     scales: [
       { description: 'Integración de SAP/BW PA conciliadas al 100% (<200 mil)', score: 3.5, level: 'excelente' },
       { description: 'Integración de SAP <10 mdp/BW <15 mdp de diferencias', score: 2.5, level: 'bueno' },
@@ -124,7 +127,7 @@ const KPI_CRITERIA_DATA: KpiCriteria[] = [
     name: 'CONCILIACIÓN DE INGRESOS MERCADERIAS PDM-BW-CO-ECC',
     category: 'Ingresos y Mercaderías',
     maxScore: 3.5,
-    objective: 'Supervisa el umbral monetario de diferencias de sistema tolerables en conciliación de ingresos por mercaderías.',
+    objective: 'Asegurar la trazabilidad, consistencia e integridad de las ventas de mercaderías en los sistemas legados de Liverpool (PDM / ECC / CO / BW), garantizando que las transacciones del punto de venta sean contabilizadas de manera correcta, así como su debida imputación al centro de costos.',
     scales: [
       { description: 'Sin diferencias significativas menor a $500', score: 3.5, level: 'excelente' },
       { description: 'Diferencia Aceptable menor a $5,000.', score: 3.0, level: 'excelente' },
@@ -135,13 +138,18 @@ const KPI_CRITERIA_DATA: KpiCriteria[] = [
     id: 'cartera-credito',
     name: 'CARTERA DE CRÉDITO',
     category: 'Crédito y Cartera',
-    maxScore: 2.5,
-    objective: 'Supervisa la variación acumulada de la cartera de crédito y el control sobre incrementos o acumulaciones excedentes.',
+    maxScore: 3.0,
+    objective: 'Garantizar la exactitud e integridad financiera de las cuentas por cobrar, asegurando que no existan discrepancias materiales entre la operación comercial (sistema de clientes) y la contabilidad (SAP). manteniendo las partidas en conciliación en el umbral minimo aceptable.',
     scales: [
       {
-        description: 'Variación acumulada dentro del umbral de ±5%. (Umbral determinado de partidas en conciliación de diciembre 2025)',
-        score: 2.5,
+        description: 'Conciliado Sin diferencias',
+        score: 3.0,
         level: 'excelente',
+      },
+      {
+        description: 'Variación acumulada dentro del umbral de ±5%. (Umbral determinado de partidas en conciliación del acumulado 2026)',
+        score: 2.5,
+        level: 'bueno',
       },
       {
         description: 'Variación superior al 5%, sujeta a análisis operativo y validación de causas. (Umbral determinado de partidas en conciliación de diciembre 2025)',
@@ -407,8 +415,18 @@ export const CriteriosEvaluacionTab: React.FC<CriteriosEvaluacionTabProps> = ({ 
           />
         </div>
 
-        <div className="text-[16px] sm:text-[17px] text-gray-600 font-medium">
-          Mostrando <strong className="text-slate-800 font-bold">{filteredCriteria.length}</strong> de {KPI_CRITERIA_DATA.length} KPI's evaluados
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+          <div className="text-[15px] sm:text-[16px] text-gray-600 font-medium">
+            Mostrando <strong className="text-slate-800 font-bold">{filteredCriteria.length}</strong> de {KPI_CRITERIA_DATA.length} KPI's evaluados
+          </div>
+          <button
+            onClick={() => downloadCriteriosWorkbook(KPI_CRITERIA_DATA)}
+            className="flex items-center gap-1.5 px-3.5 py-1.5 bg-[#8F2366] hover:bg-[#781B54] text-white text-[13px] sm:text-[14px] font-bold rounded-lg shadow-xs hover:shadow transition-all cursor-pointer active:scale-98"
+            title="Descargar matriz completa de criterios en formato Excel (.xlsx)"
+          >
+            <Download className="w-4 h-4 text-white" />
+            <span>Descargar Criterios (.xlsx)</span>
+          </button>
         </div>
       </div>
 
@@ -450,9 +468,20 @@ export const CriteriosEvaluacionTab: React.FC<CriteriosEvaluacionTabProps> = ({ 
               </h3>
             </div>
           </div>
-          <span className="text-[16px] sm:text-[17px] bg-white/15 px-4 py-1 rounded-full font-mono font-bold text-white self-start sm:self-auto border border-white/20">
-            {KPI_CRITERIA_DATA.length} Indicadores
-          </span>
+          <div className="flex items-center gap-2.5 self-start sm:self-auto flex-wrap">
+            <span className="text-[14px] sm:text-[15px] bg-white/15 px-3 py-1.5 rounded-lg font-mono font-bold text-white border border-white/20">
+              {KPI_CRITERIA_DATA.length} Indicadores
+            </span>
+            <button
+              id="btn-download-criterios-matrix"
+              onClick={() => downloadCriteriosWorkbook(KPI_CRITERIA_DATA)}
+              className="flex items-center gap-2 px-3.5 py-1.5 bg-white text-[#8F2366] hover:bg-pink-50 font-extrabold text-[13px] sm:text-[14px] rounded-lg shadow-sm hover:shadow-md transition-all cursor-pointer border border-white/80 active:scale-98"
+              title="Descargar la matriz oficial de ponderación y criterios en formato Excel (.xlsx)"
+            >
+              <Download className="w-4 h-4 text-[#8F2366]" />
+              <span>Descargar en Excel</span>
+            </button>
+          </div>
         </div>
 
         <div className="overflow-x-auto max-h-[680px] overflow-y-auto relative">
@@ -561,6 +590,15 @@ export const CriteriosEvaluacionTab: React.FC<CriteriosEvaluacionTabProps> = ({ 
                           </div>
                           {kpi.id === 'cartera-credito' && sIdx === kpi.scales.length - 1 && (
                             <CarteraCreditoUmbralesGraphic />
+                          )}
+                          {kpi.id === 'isr' && sIdx === kpi.scales.length - 1 && (
+                            <IsrClasificacionGraphic />
+                          )}
+                          {kpi.id === 'intercias' && sIdx === kpi.scales.length - 1 && (
+                            <InterempresasGraphic />
+                          )}
+                          {kpi.id === 'iva' && sIdx === kpi.scales.length - 1 && (
+                            <IvaClasificacionGraphic />
                           )}
                         </td>
 

@@ -686,3 +686,88 @@ export function formatKpiNumber(
   const formatted = value.toFixed(decimals);
   return useComma ? formatted.replace('.', ',') : formatted;
 }
+
+/**
+ * Export and download the Official KPI Evaluation Criteria & Weighting Matrix as Excel (.xlsx)
+ */
+export function downloadCriteriosWorkbook(criterias: any[]) {
+  // Sheet 1: Detailed Matrix of Scales & Thresholds
+  const detailedRows: any[] = [];
+  criterias.forEach((kpi, kpiIdx) => {
+    const kpiNum = ('number' in kpi && kpi.number) ? kpi.number : (kpiIdx + 1);
+    if (Array.isArray(kpi.scales) && kpi.scales.length > 0) {
+      kpi.scales.forEach((scale: any) => {
+        let semaforoTxt = 'Verde (3.0 a 3.5 / Excelente)';
+        if (scale.level === 'critico' || scale.score < 2.0) {
+          semaforoTxt = 'Rojo (1.0 a 1.99 / Crítico)';
+        } else if (scale.level === 'bueno' || scale.level === 'regular' || (scale.score >= 2.0 && scale.score < 3.0)) {
+          semaforoTxt = 'Amarillo (2.0 a 2.99 / Bueno - Regular)';
+        }
+
+        detailedRows.push({
+          'No.': kpiNum,
+          'KPI / MÓDULO': kpi.name,
+          'CATEGORÍA': kpi.category,
+          'PONDERACIÓN MÁXIMA (PTS)': kpi.maxScore,
+          'OBJETIVO DE CONTROL': kpi.objective + (kpi.note ? ` | ${kpi.note}` : ''),
+          'DESCRIPCIÓN / UMBRAL': scale.description,
+          'CALIFICACIÓN': scale.score,
+          'SEMÁFORO': semaforoTxt,
+        });
+      });
+    } else {
+      detailedRows.push({
+        'No.': kpiNum,
+        'KPI / MÓDULO': kpi.name,
+        'CATEGORÍA': kpi.category,
+        'PONDERACIÓN MÁXIMA (PTS)': kpi.maxScore,
+        'OBJETIVO DE CONTROL': kpi.objective,
+        'DESCRIPCIÓN / UMBRAL': '-',
+        'CALIFICACIÓN': kpi.maxScore,
+        'SEMÁFORO': 'Verde (3.0 a 3.5 / Excelente)',
+      });
+    }
+  });
+
+  // Sheet 2: Summary of all KPIs
+  const summaryRows = criterias.map((kpi, kpiIdx) => ({
+    'No.': ('number' in kpi && kpi.number) ? kpi.number : (kpiIdx + 1),
+    'KPI / MÓDULO': kpi.name,
+    'CATEGORÍA': kpi.category,
+    'PONDERACIÓN MÁXIMA (PTS)': kpi.maxScore,
+    'NÚMERO DE ESCALAS': Array.isArray(kpi.scales) ? kpi.scales.length : 0,
+    'OBJETIVO DE CONTROL': kpi.objective,
+    'NOTAS TÉCNICAS': kpi.note || 'N/A',
+  }));
+
+  const wb = XLSX.utils.book_new();
+
+  // Sheet 1
+  const wsDetailed = XLSX.utils.json_to_sheet(detailedRows);
+  wsDetailed['!cols'] = [
+    { wch: 6 },   // No.
+    { wch: 42 },  // KPI / Módulo
+    { wch: 28 },  // Categoría
+    { wch: 22 },  // Ponderación Máx
+    { wch: 65 },  // Objetivo de Control
+    { wch: 65 },  // Descripción / Umbral
+    { wch: 14 },  // Calificación
+    { wch: 32 },  // Semáforo
+  ];
+  XLSX.utils.book_append_sheet(wb, wsDetailed, "CRITERIOS Y UMBRALES");
+
+  // Sheet 2
+  const wsSummary = XLSX.utils.json_to_sheet(summaryRows);
+  wsSummary['!cols'] = [
+    { wch: 6 },   // No.
+    { wch: 42 },  // KPI / Módulo
+    { wch: 28 },  // Categoría
+    { wch: 22 },  // Ponderación Máx
+    { wch: 18 },  // Número de Escalas
+    { wch: 70 },  // Objetivo de Control
+    { wch: 45 },  // Notas
+  ];
+  XLSX.utils.book_append_sheet(wb, wsSummary, "RESUMEN DE KPIS");
+
+  XLSX.writeFile(wb, "MATRIZ_DE_PONDERACION_Y_CRITERIOS_OFICIALES.xlsx");
+}
